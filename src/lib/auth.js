@@ -12,5 +12,15 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+    },
+    user:{
+        additionalFields:{
+            role:{
+                defaultValue: "Collaborator" // Founder,Admin
+            },
+            plan:{
+                defaultValue: "free"
+            }
+        }
     }
 });
