@@ -36,7 +36,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 w-full max-w-2xl mx-auto border mt-10 mb-10 bg-red-200">
+    <div className="flex items-center justify-center rounded-3xl bg-surface p-6 w-full max-w-xl mx-auto border mt-10 mb-10 bg-red-200">
       <Surface className="w-full ">
         <Form onSubmit={onSubmit}>
           <Fieldset className="w-full">

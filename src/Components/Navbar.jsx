@@ -1,8 +1,17 @@
+'use client'
 import { Button } from "@heroui/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 
 const Navbar = () => {
+
+    const pathname = usePathname();
+
+    if(pathname.includes("Dashboard")){
+        return null;
+    }
+
     return (
         <div className="bg-red-200 w-full max-w-7xl mx-auto">
             <nav className=" flex justify-between items-center bg-green-50">
