@@ -1,9 +1,15 @@
+import { Button } from '@heroui/react';
+import Link from 'next/link';
 import React from 'react';
 
 const Navbar = () => {
     return (
         <div>
-            <h1>Navbar</h1>
+           <ul>
+            <li>
+                <Link href={"/signup"} > <Button>SignUp</Button> </Link>
+            </li>
+           </ul>
         </div>
     );
 };
