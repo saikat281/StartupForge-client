@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import {
   LayoutDashboard,
   Users,
@@ -7,21 +8,101 @@ import {
   Settings,
   FolderKanban,
 } from "lucide-react";
+import Link from "next/link";
 
-const NAV_ITEMS = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Projects", icon: FolderKanban },
-  { label: "Team", icon: Users },
-  { label: "Analytics", icon: BarChart3 },
-  { label: "Settings", icon: Settings },
-];
+
 
 export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
+
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+  const role = user?.role.toLowerCase() || "collaborator";
+  console.log(role);
+
+  const NAV_ITEMS = {
+    collaborator: [
+
+      {
+        label: "Overview",
+        icon: LayoutDashboard,
+        href: "/dashboard/collaborator"
+      },
+      {
+        label: "My Applications",
+        icon: FolderKanban,
+        href: "/dashboard/collaborator/application"
+      },
+      {
+        label: "Profile",
+        icon: Users,
+        href: "/dashboard/collaborator/profile"
+      }
+
+    ],
+    founder: [
+
+      {
+        label: "Overview",
+        icon: LayoutDashboard,
+        href: "/dashboard/founder/overview"
+      },
+      {
+        label: "My startup",
+        icon: FolderKanban,
+        href: "/dashboard/founder/myStartup"
+      },
+      {
+        label: "Add Opportunity",
+        icon: Users,
+        href: "/dashboard/founder/addOpportunity"
+      },
+      {
+        label: "Manage Opportunities",
+        icon: Users,
+        href: "/dashboard/founder/manageOpportunities"
+      },
+      {
+        label: "Applications",
+        icon: Users,
+        href: "/dashboard/founder/applications"
+      }
+
+    ],
+    admin:[
+      {
+        label: "Overview",
+        icon: LayoutDashboard,
+        href: "/dashboard/admin"
+      },
+      {
+        label: "Manage users",
+        icon: Users,
+        href: "/dashboard/admin/manageUsers"
+      },
+      {
+        label: "Manage startups",
+        icon: Users,
+        href: "/dashboard/admin/manageStartups"
+      },
+      {
+        label: "Transactions",
+        icon: Users,
+        href: "/dashboard/admin/transactions"
+      },
+      
+    ]
+
+
+
+  };
+
+  const menu = NAV_ITEMS[role] || NAV_ITEMS.founder;
+
   return (
     <aside
-      className={`${
-        sidebarOpen ? "w-[220px]" : "w-[72px]"
-      } shrink-0 border-r border-gray-200 bg-white flex flex-col transition-all duration-200`}
+      className={`${sidebarOpen ? "w-[220px]" : "w-[72px]"
+        } shrink-0 border-r border-gray-200 bg-white flex flex-col transition-all duration-200`}
     >
       <div className="h-20 flex items-center gap-2 px-5 border-b border-gray-200">
         <div className="h-8 w-8 rounded-lg bg-gray-900 flex items-center justify-center text-white font-semibold text-sm shrink-0">
@@ -33,21 +114,26 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {NAV_ITEMS.map(({ label, icon: Icon }) => {
+        {menu.map(({ label, icon: Icon, href }) => {
           const isActive = active === label;
           return (
-            <button
-              key={label}
-              onClick={() => setActive(label)}
-              className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                isActive
+            <Link 
+            key={label}
+            href={href}
+            >
+              <button
+                
+                onClick={() => setActive(label)}
+                className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
                   ? "bg-gray-900 text-white"
                   : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              <Icon size={18} className="shrink-0" />
-              {sidebarOpen && <span>{label}</span>}
-            </button>
+                  }`}
+              >
+                <Icon size={18} className="shrink-0" />
+                {sidebarOpen && <span>{label}</span>}
+              </button>
+            </Link>
+
           );
         })}
       </nav>
