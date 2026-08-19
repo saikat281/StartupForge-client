@@ -45,12 +45,12 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
       {
         label: "Overview",
         icon: LayoutDashboard,
-        href: "/dashboard/founder/overview"
+        href: "/dashboard/founder/"
       },
       {
         label: "My startup",
         icon: FolderKanban,
-        href: "/dashboard/founder/myStartup"
+        href: "/dashboard/founder/mystartup"
       },
       {
         label: "Add Opportunity",
@@ -101,7 +101,7 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
 
   return (
     <aside
-      className={`${sidebarOpen ? "w-[220px]" : "w-[72px]"
+      className={`${sidebarOpen ? "w-[260px]" : "w-[72px]"
         } shrink-0 border-r border-gray-200 bg-white flex flex-col transition-all duration-200`}
     >
       <div className="h-20 flex items-center gap-2 px-5 border-b border-gray-200">
