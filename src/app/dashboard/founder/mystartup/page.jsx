@@ -79,8 +79,8 @@ const CreateStartupPage = () => {
 
     const upload_image = await imageUpload(data.image);
 
-    console.log(upload_image)
-    console.log(upload_image.url)
+    // console.log(upload_image)
+    // console.log(upload_image.url)
     await addStartup({...data,image: upload_image.url,userId: user?.id})
     toast.success('Startup Successfully created!');
 
