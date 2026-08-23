@@ -45,16 +45,16 @@ const SignupPage = () => {
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
-    console.log(user)
+    // console.log(user)
     try {
-      const response = await authClient.signUp.email({
-        ...user,
-        plan: "free",
-      });
+      const response = await authClient.signIn.email({
+      ...user,
+      callbackURL: "/",
+    });
 
-      console.log("Signup successful:", response);
+      console.log("Signin successful:", response);
     } catch (error) {
-      console.error("Signup failed:", error);
+      console.error("Signin failed:", error);
     }
 
     // redirect('/')
@@ -74,46 +74,7 @@ const SignupPage = () => {
           onSubmit={handleSubmit}
           className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-5"
         >
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="name"
-              type="text"
-              value={form.name}
-              onChange={handleChange("name")}
-              placeholder="e.g. Jane Doe"
-              className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 ${errors.name ? "border-red-400" : "border-gray-200"
-                }`}
-            />
-            {errors.name && (
-              <p className="text-xs text-red-500 mt-1">{errors.name}</p>
-            )}
-          </div>
-
-          {/* Image URL */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Image URL
-            </label>
-            <div className="relative">
-              <ImageIcon
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                name="image"
-                type="url"
-                value={form.imageUrl}
-                onChange={handleChange("imageUrl")}
-                placeholder="https://example.com/avatar.jpg"
-                className="w-full rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300"
-              />
-            </div>
-          </div>
-
+         
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -161,29 +122,7 @@ const SignupPage = () => {
             )}
           </div>
 
-          {/* Signup As */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Signup As <span className="text-red-500">*</span>
-            </label>
-            <select
-              name="role"
-              value={form.signupAs}
-              onChange={handleChange("signupAs")}
-              className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 ${errors.signupAs ? "border-red-400" : "border-gray-200"
-                }`}
-            >
-              <option value="">Select role</option>
-              {SIGNUP_ROLES.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
-            {errors.signupAs && (
-              <p className="text-xs text-red-500 mt-1">{errors.signupAs}</p>
-            )}
-          </div>
+
 
           {/* Submit */}
           <button

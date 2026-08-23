@@ -69,7 +69,7 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
       }
 
     ],
-    admin:[
+    admin: [
       {
         label: "Overview",
         icon: LayoutDashboard,
@@ -90,7 +90,7 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
         icon: Users,
         href: "/dashboard/admin/transactions"
       },
-      
+
     ]
 
 
@@ -106,10 +106,16 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
     >
       <div className="h-20 flex items-center gap-2 px-5 border-b border-gray-200">
         <div className="h-8 w-8 rounded-lg bg-gray-900 flex items-center justify-center text-white font-semibold text-sm shrink-0">
-          A
+          {user?.role[0]}
         </div>
         {sidebarOpen && (
-          <span className="font-semibold text-sm tracking-tight">Acme Inc.</span>
+          <div>
+            <span className="font-semibold text-md tracking-tight">{user?.name}</span>
+            <p className="text-[12px]">{user?.role}</p>
+          </div>
+
+
+
         )}
       </div>
 
@@ -117,12 +123,12 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
         {menu.map(({ label, icon: Icon, href }) => {
           const isActive = active === label;
           return (
-            <Link 
-            key={label}
-            href={href}
+            <Link
+              key={label}
+              href={href}
             >
               <button
-                
+
                 onClick={() => setActive(label)}
                 className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
                   ? "bg-gray-900 text-white"
