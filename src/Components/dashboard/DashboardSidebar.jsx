@@ -16,9 +16,9 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
   const role = user?.role.toLowerCase() || "collaborator";
-  console.log(role);
+  // console.log(role);
 
   const NAV_ITEMS = {
     collaborator: [

@@ -1,7 +1,23 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
+import {
+  Button,
+  Description,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  ListBox,
+  Select,
+  TextArea,
+  TextField,
+} from "@heroui/react";
 import { Rocket, Upload, X } from "lucide-react";
+import { addStartup } from "@/lib/actions/MyStartupForm";
+import toast from "react-hot-toast";
+import { imageUpload } from "@/lib/imageUpload";
+import { authClient } from "@/lib/auth-client";
 
 const INDUSTRIES = [
   "SaaS",
@@ -26,194 +42,204 @@ const FUNDING_STAGES = [
 const CreateStartupPage = () => {
   const fileInputRef = useRef(null);
   const [logoPreview, setLogoPreview] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    industry: "",
-    fundingStage: "",
-    description: "",
-  });
-  const [errors, setErrors] = useState({});
 
-  const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
+  const {data: session} = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
 
   const handleLogoChange = (e) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
-    setLogoPreview(URL.createObjectURL(file));
+
+    const previewUrl = URL.createObjectURL(file);
+    setLogoPreview(previewUrl);
   };
 
   const removeLogo = () => {
+    if (logoPreview) {
+      URL.revokeObjectURL(logoPreview);
+    }
+
     setLogoPreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
-  const validate = () => {
-    const next = {};
-    if (!form.name.trim()) next.name = "Startup name is required";
-    if (!form.industry) next.industry = "Industry is required";
-    if (!form.fundingStage) next.fundingStage = "Funding stage is required";
-    if (!form.description.trim()) next.description = "Description is required";
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
-  const handleSubmit = (e) => {
+  // HandleSubmit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
-    console.log("Submitting startup:", form, fileInputRef.current?.files?.[0]);
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    // console.log(data);
+
+    const upload_image = await imageUpload(data.image);
+
+    console.log(upload_image)
+    console.log(upload_image.url)
+    await addStartup({...data,image: upload_image.url,userId: user?.id})
+    toast.success('Startup Successfully created!');
+
   };
 
   return (
     <div className="p-6">
-      <div className="max-w-2xl mx-auto">
+      <div className="mx-auto max-w-2xl">
+        {/* Header */}
         <div className="mb-6">
-          <h1 className="text-xl font-semibold text-gray-900">Create Startup</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-xl font-semibold text-gray-900">
+            Create Startup
+          </h1>
+
+          <p className="mt-1 text-sm text-gray-500">
             Fill in the details below to list a new startup.
           </p>
         </div>
 
-        <form
+        {/* HeroUI Form */}
+        <Form
           onSubmit={handleSubmit}
-          className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-5"
+          className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+          validationBehavior="native"
         >
           {/* Startup Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Startup Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={handleChange("name")}
-              placeholder="e.g. Acme Inc."
-              className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 ${
-                errors.name ? "border-red-400" : "border-gray-200"
-              }`}
-            />
-            {errors.name && (
-              <p className="text-xs text-red-500 mt-1">{errors.name}</p>
-            )}
-          </div>
+          <TextField
+            name="name"
+            isRequired
+            className="w-full"
+          >
+            <Label>Startup Name</Label>
 
-          {/* Logo Image */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Logo Image
-            </label>
-            {logoPreview ? (
-              <div className="flex items-center gap-3">
-                <img
-                  src={logoPreview}
-                  alt="Logo preview"
-                  className="h-14 w-14 rounded-lg object-cover border border-gray-200"
-                />
-                <button
-                  type="button"
-                  onClick={removeLogo}
-                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-500"
-                >
-                  <X size={14} />
-                  Remove
-                </button>
-              </div>
-            ) : (
-              <label className="flex items-center gap-2 w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 px-3 py-3 text-sm text-gray-500 cursor-pointer hover:bg-gray-100 transition-colors">
-                <Upload size={16} />
-                <span>Click to upload logo</span>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoChange}
-                  className="hidden"
-                />
-              </label>
-            )}
-          </div>
+            <Input
+              placeholder="e.g. Acme Inc."
+              className="w-full"
+            />
+
+            <FieldError />
+          </TextField>
+
+          {/* Logo */}
+          <TextField
+            name="image"
+            type="file"
+            className="w-full"
+          >
+            <Label>Logo</Label>
+
+            <input
+              name="image"
+              type="file"
+              placeholder="Upload iamge"
+              className="w-full"
+            />
+
+            <FieldError />
+          </TextField>
 
           {/* Industry + Funding Stage */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Industry <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={form.industry}
-                onChange={handleChange("industry")}
-                className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 ${
-                  errors.industry ? "border-red-400" : "border-gray-200"
-                }`}
-              >
-                <option value="">Select industry</option>
-                {INDUSTRIES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              {errors.industry && (
-                <p className="text-xs text-red-500 mt-1">{errors.industry}</p>
-              )}
-            </div>
+          <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
+            {/* Industry */}
+            <Select
+              name="industry"
+              isRequired
+              className="w-full"
+              placeholder="Select industry"
+            >
+              <Label>Industry</Label>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Funding Stage <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={form.fundingStage}
-                onChange={handleChange("fundingStage")}
-                className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 ${
-                  errors.fundingStage ? "border-red-400" : "border-gray-200"
-                }`}
-              >
-                <option value="">Select stage</option>
-                {FUNDING_STAGES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              {errors.fundingStage && (
-                <p className="text-xs text-red-500 mt-1">{errors.fundingStage}</p>
-              )}
-            </div>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+
+              <Select.Popover>
+                <ListBox>
+                  {INDUSTRIES.map((industry) => (
+                    <ListBox.Item
+                      key={industry}
+                      id={industry}
+                      textValue={industry}
+                    >
+                      {industry}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+
+              <FieldError />
+            </Select>
+
+            {/* Funding Stage */}
+            <Select
+              name="fundingStage"
+              isRequired
+              className="w-full"
+              placeholder="Select stage"
+            >
+              <Label>Funding Stage</Label>
+
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+
+              <Select.Popover>
+                <ListBox>
+                  {FUNDING_STAGES.map((stage) => (
+                    <ListBox.Item
+                      key={stage}
+                      id={stage}
+                      textValue={stage}
+                    >
+                      {stage}
+                      <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  ))}
+                </ListBox>
+              </Select.Popover>
+
+              <FieldError />
+            </Select>
           </div>
 
           {/* Description */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">
-              Description <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              value={form.description}
-              onChange={handleChange("description")}
-              rows={4}
+          <TextField
+            name="description"
+            isRequired
+            className="w-full"
+          >
+            <Label>Description</Label>
+
+            <TextArea
               placeholder="What does your startup do?"
-              className={`w-full rounded-lg border bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 resize-none ${
-                errors.description ? "border-red-400" : "border-gray-200"
-              }`}
+              rows={4}
+              className="w-full resize-none"
             />
-            {errors.description && (
-              <p className="text-xs text-red-500 mt-1">{errors.description}</p>
-            )}
-          </div>
+
+            <Description>
+              Briefly describe what your startup does.
+            </Description>
+
+            <FieldError />
+          </TextField>
 
           {/* Submit */}
-          <div className="flex justify-end pt-2">
-            <button
+          <div className="flex w-full justify-end pt-2">
+            <Button
               type="submit"
-              className="flex items-center gap-2 rounded-lg bg-gray-900 text-white text-sm font-medium px-5 py-2.5 hover:bg-gray-800 transition-colors"
+              color="primary"
+              className="flex items-center gap-2"
             >
               <Rocket size={16} />
               Create Startup
-            </button>
+            </Button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
