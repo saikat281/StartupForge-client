@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Search, ChevronDown, Menu, X } from "lucide-react";
+import { AvatarDropdown } from "../AvatarDropdown";
 
 export default function DashboardNavbar({ active, sidebarOpen, setSidebarOpen }) {
   return (
@@ -30,16 +31,7 @@ export default function DashboardNavbar({ active, sidebarOpen, setSidebarOpen })
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <button className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-500">
-          <Bell size={18} />
-          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500" />
-        </button>
-        <button className="flex items-center gap-2 pl-2 border-l border-gray-200">
-          <div className="h-8 w-8 rounded-full bg-gray-300" />
-          <ChevronDown size={16} className="text-gray-400" />
-        </button>
-      </div>
+      <AvatarDropdown></AvatarDropdown>
     </header>
   );
 }
