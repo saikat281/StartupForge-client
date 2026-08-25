@@ -29,7 +29,7 @@ const AddOpportunityPage = () => {
 
     const { data: session } = authClient.useSession();
     const user = session?.user;
-    
+
 
     const handleChange = (field) => (e) => {
         setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -65,9 +65,14 @@ const AddOpportunityPage = () => {
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
 
-        console.log(data);
+        // console.log(data);
 
-        await addOpportunity({ ...data,userId : user?.id })
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`)
+        const mystartup = await res.json();
+        const findStartup = mystartup?.find(data => data?.userId == user?.id)
+        // console.log(findStartup.name);
+
+        await addOpportunity({ ...data, userId: user?.id,startup: findStartup?.name })
         toast.success('Opportunity Successfully created!');
     };
 

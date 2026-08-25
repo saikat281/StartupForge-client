@@ -14,7 +14,7 @@ import { Send } from "lucide-react";
 import { ApplicationForm } from "@/lib/actions/ApplicationForm";
 import toast from "react-hot-toast";
 
-const ApplyOpportunityModal = ({ opportunityId }) => {
+const ApplyOpportunityModal = ({ opportunity }) => {
     const [form, setForm] = useState({
         email: "",
         portfolioLink: "",
@@ -54,11 +54,16 @@ const ApplyOpportunityModal = ({ opportunityId }) => {
         if (!validate()) return;
         setSubmitting(true);
         try {
-            console.log("Submitting application:", { opportunityId, ...form });
+            // console.log("Submitting application:", { opportunityId, ...form });
 
             const status = "pending";
 
-            await ApplicationForm({ ...form, opportunityId, status })
+            const today = new Date();
+            const date = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+            // console.log(date);
+
+
+            await ApplicationForm({ ...form, opportunity_name: opportunity?.roleTitle, startup: opportunity?.startup, status, date })
 
             // await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/applications`, {
             //   method: "POST",

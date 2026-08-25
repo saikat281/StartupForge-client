@@ -23,6 +23,7 @@ const OpportunityDetailsPage = async ({ params }) => {
   const { id } = await params;
   const res = await fetch(`${process.env.SERVER_URL}/opportunity/${id}`);
   const opportunity = await res.json();
+  // console.log(opportunity)
 
   const skillTags = (opportunity?.skills || "")
     .split(",")
@@ -114,7 +115,7 @@ const OpportunityDetailsPage = async ({ params }) => {
             {/* <button className="w-full sm:w-auto rounded-lg bg-gray-900 text-white text-sm font-medium px-6 py-2.5 hover:bg-gray-800 transition-colors">
               Apply Now
             </button> */}
-            <ApplyOpportunityModal opportunityId={id}></ApplyOpportunityModal>
+            <ApplyOpportunityModal opportunity={opportunity}></ApplyOpportunityModal>
           </div>
         </div>
       </div>
