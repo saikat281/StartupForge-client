@@ -1,3 +1,4 @@
+import ApplyOpportunityModal from "@/Components/collaborator/ApplyOpportunityModal";
 import {
   Briefcase,
   MapPin,
@@ -110,9 +111,10 @@ const OpportunityDetailsPage = async ({ params }) => {
 
           {/* Apply */}
           <div className="mt-6 border-t border-gray-100 pt-5">
-            <button className="w-full sm:w-auto rounded-lg bg-gray-900 text-white text-sm font-medium px-6 py-2.5 hover:bg-gray-800 transition-colors">
+            {/* <button className="w-full sm:w-auto rounded-lg bg-gray-900 text-white text-sm font-medium px-6 py-2.5 hover:bg-gray-800 transition-colors">
               Apply Now
-            </button>
+            </button> */}
+            <ApplyOpportunityModal opportunityId={id}></ApplyOpportunityModal>
           </div>
         </div>
       </div>
