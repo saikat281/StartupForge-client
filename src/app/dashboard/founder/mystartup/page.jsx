@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Description,
@@ -18,6 +18,7 @@ import { addStartup } from "@/lib/actions/MyStartupForm";
 import toast from "react-hot-toast";
 import { imageUpload } from "@/lib/imageUpload";
 import { authClient } from "@/lib/auth-client";
+import StartupCard from "@/Components/founder/startup/StartupCard";
 
 const INDUSTRIES = [
   "SaaS",
@@ -42,10 +43,11 @@ const FUNDING_STAGES = [
 const CreateStartupPage = () => {
   const fileInputRef = useRef(null);
   const [logoPreview, setLogoPreview] = useState(null);
+  const [startup, setStartup] = useState([]);
 
-  const {data: session} = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
 
   const handleLogoChange = (e) => {
     const file = e.target.files?.[0];
@@ -68,6 +70,40 @@ const CreateStartupPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const fetchStartup = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch startup");
+        }
+
+        const data = await res.json();
+
+        if (data.length > 0) {
+          setStartup(data);
+          console.log("Startup exists");
+        } else {
+          setStartup([]);
+          console.log("Startup doesn't exist");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchStartup();
+  }, [user?.id]);
+
+  console.log(startup);
+
+
+
   // HandleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,166 +117,174 @@ const CreateStartupPage = () => {
 
     // console.log(upload_image)
     // console.log(upload_image.url)
-    await addStartup({...data,image: upload_image.url,userId: user?.id})
+    await addStartup({ ...data, image: upload_image.url, userId: user?.id })
     toast.success('Startup Successfully created!');
 
   };
 
   return (
     <div className="p-6">
-      <div className="mx-auto max-w-2xl">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-xl font-semibold text-gray-900">
-            Create Startup
-          </h1>
+      {startup?.some(data => data?.userId === user?.id) ? (
+        <StartupCard data={startup} UserId={user?.id}></StartupCard>
+      ) : (
+        <div className="mx-auto max-w-2xl">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-xl font-semibold text-gray-900">
+              Create Startup
+            </h1>
 
-          <p className="mt-1 text-sm text-gray-500">
-            Fill in the details below to list a new startup.
-          </p>
-        </div>
+            <p className="mt-1 text-sm text-gray-500">
+              Fill in the details below to list a new startup.
+            </p>
+          </div>
 
-        {/* HeroUI Form */}
-        <Form
-          onSubmit={handleSubmit}
-          className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
-          validationBehavior="native"
-        >
-          {/* Startup Name */}
-          <TextField
-            name="name"
-            isRequired
-            className="w-full"
+          {/* HeroUI Form */}
+          <Form
+            onSubmit={handleSubmit}
+            className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
+            validationBehavior="native"
           >
-            <Label>Startup Name</Label>
-
-            <Input
-              placeholder="e.g. Acme Inc."
+            {/* Startup Name */}
+            <TextField
+              name="name"
+              isRequired
               className="w-full"
-            />
+            >
+              <Label>Startup Name</Label>
 
-            <FieldError />
-          </TextField>
+              <Input
+                placeholder="e.g. Acme Inc."
+                className="w-full"
+              />
 
-          {/* Logo */}
-          <TextField
-            name="image"
-            type="file"
-            className="w-full"
-          >
-            <Label>Logo</Label>
+              <FieldError />
+            </TextField>
 
-            <input
+            {/* Logo */}
+            <TextField
               name="image"
               type="file"
-              placeholder="Upload iamge"
               className="w-full"
-            />
-
-            <FieldError />
-          </TextField>
-
-          {/* Industry + Funding Stage */}
-          <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
-            {/* Industry */}
-            <Select
-              name="industry"
-              isRequired
-              className="w-full"
-              placeholder="Select industry"
             >
-              <Label>Industry</Label>
+              <Label>Logo</Label>
 
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
-
-              <Select.Popover>
-                <ListBox>
-                  {INDUSTRIES.map((industry) => (
-                    <ListBox.Item
-                      key={industry}
-                      id={industry}
-                      textValue={industry}
-                    >
-                      {industry}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
+              <input
+                name="image"
+                type="file"
+                placeholder="Upload iamge"
+                className="w-full"
+              />
 
               <FieldError />
-            </Select>
+            </TextField>
 
-            {/* Funding Stage */}
-            <Select
-              name="fundingStage"
+            {/* Industry + Funding Stage */}
+            <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
+              {/* Industry */}
+              <Select
+                name="industry"
+                isRequired
+                className="w-full"
+                placeholder="Select industry"
+              >
+                <Label>Industry</Label>
+
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+
+                <Select.Popover>
+                  <ListBox>
+                    {INDUSTRIES.map((industry) => (
+                      <ListBox.Item
+                        key={industry}
+                        id={industry}
+                        textValue={industry}
+                      >
+                        {industry}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
+
+                <FieldError />
+              </Select>
+
+              {/* Funding Stage */}
+              <Select
+                name="fundingStage"
+                isRequired
+                className="w-full"
+                placeholder="Select stage"
+              >
+                <Label>Funding Stage</Label>
+
+                <Select.Trigger>
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+
+                <Select.Popover>
+                  <ListBox>
+                    {FUNDING_STAGES.map((stage) => (
+                      <ListBox.Item
+                        key={stage}
+                        id={stage}
+                        textValue={stage}
+                      >
+                        {stage}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
+
+                <FieldError />
+              </Select>
+            </div>
+
+            {/* Description */}
+            <TextField
+              name="description"
               isRequired
               className="w-full"
-              placeholder="Select stage"
             >
-              <Label>Funding Stage</Label>
+              <Label>Description</Label>
 
-              <Select.Trigger>
-                <Select.Value />
-                <Select.Indicator />
-              </Select.Trigger>
+              <TextArea
+                placeholder="What does your startup do?"
+                rows={4}
+                className="w-full resize-none"
+              />
 
-              <Select.Popover>
-                <ListBox>
-                  {FUNDING_STAGES.map((stage) => (
-                    <ListBox.Item
-                      key={stage}
-                      id={stage}
-                      textValue={stage}
-                    >
-                      {stage}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  ))}
-                </ListBox>
-              </Select.Popover>
+              <Description>
+                Briefly describe what your startup does.
+              </Description>
 
               <FieldError />
-            </Select>
-          </div>
+            </TextField>
 
-          {/* Description */}
-          <TextField
-            name="description"
-            isRequired
-            className="w-full"
-          >
-            <Label>Description</Label>
+            {/* Submit */}
+            <div className="flex w-full justify-end pt-2">
+              <Button
+                type="submit"
+                color="primary"
+                className="flex items-center gap-2"
+              >
+                <Rocket size={16} />
+                Create Startup
+              </Button>
+            </div>
+          </Form>
+        </div>
+      )
 
-            <TextArea
-              placeholder="What does your startup do?"
-              rows={4}
-              className="w-full resize-none"
-            />
 
-            <Description>
-              Briefly describe what your startup does.
-            </Description>
+      }
 
-            <FieldError />
-          </TextField>
-
-          {/* Submit */}
-          <div className="flex w-full justify-end pt-2">
-            <Button
-              type="submit"
-              color="primary"
-              className="flex items-center gap-2"
-            >
-              <Rocket size={16} />
-              Create Startup
-            </Button>
-          </div>
-        </Form>
-      </div>
     </div>
   );
 };

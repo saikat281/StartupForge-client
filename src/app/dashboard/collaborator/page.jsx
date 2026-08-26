@@ -20,7 +20,7 @@ const ACTIONS = [
     icon: FileText,
     iconBg: "bg-purple-50",
     iconColor: "text-purple-600",
-    href: "/collaborator/applications",
+    href: "/dashboard/collaborator/application",
   },
   {
     label: "Update Profile",
@@ -28,7 +28,7 @@ const ACTIONS = [
     icon: UserCog,
     iconBg: "bg-green-50",
     iconColor: "text-green-600",
-    href: "/collaborator/profile",
+    href: "/dashboard/collaborator/profile",
   },
 ];
 

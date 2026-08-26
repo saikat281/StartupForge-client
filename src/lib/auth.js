@@ -13,14 +13,20 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
-    user:{
-        additionalFields:{
-            role:{
+    user: {
+        additionalFields: {
+            role: {
                 defaultValue: "collaborator"  // Admin,Founder,Collaborator
             },
-            plan:{
-                defaultValue:"free" //free,pro
-            }
+            plan: {
+                defaultValue: "free" //free,pro
+            },
+            bio: {
+                defaultValue : null
+            },
+            skills: {
+                defaultValue: null
+            },
         }
     }
 });

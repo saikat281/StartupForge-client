@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { UserPlus, Eye, EyeOff, ImageIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
 const SIGNUP_ROLES = ["founder", "collaborator"];
 
@@ -42,6 +44,7 @@ const SignupPage = () => {
   // Handle_Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validate()) return;
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
@@ -56,8 +59,8 @@ const SignupPage = () => {
     } catch (error) {
       console.error("Signup failed:", error);
     }
-
-    // redirect('/')
+    toast.success("Account Created Successfully")
+    redirect('/dashboard')
   };
 
   return (
