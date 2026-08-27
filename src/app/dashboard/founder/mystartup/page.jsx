@@ -40,6 +40,8 @@ const FUNDING_STAGES = [
   "Bootstrapped",
 ];
 
+
+
 const CreateStartupPage = () => {
   const fileInputRef = useRef(null);
   const [logoPreview, setLogoPreview] = useState(null);
@@ -100,7 +102,7 @@ const CreateStartupPage = () => {
     fetchStartup();
   }, [user?.id]);
 
-  console.log(startup);
+  // console.log(startup);
 
 
 
@@ -115,16 +117,18 @@ const CreateStartupPage = () => {
 
     const upload_image = await imageUpload(data.image);
 
+    const status = "pending";
+
     // console.log(upload_image)
     // console.log(upload_image.url)
-    await addStartup({ ...data, image: upload_image.url, userId: user?.id })
+    await addStartup({ ...data, image: upload_image.url, userId: user?.id, status })
     toast.success('Startup Successfully created!');
 
   };
 
   return (
     <div className="p-6">
-      {startup?.some(data => data?.userId === user?.id) ? (
+      {startup?.some(data => data?.userId === user?.id && data?.status != "rejected") ? (
         <StartupCard data={startup} UserId={user?.id}></StartupCard>
       ) : (
         <div className="mx-auto max-w-2xl">

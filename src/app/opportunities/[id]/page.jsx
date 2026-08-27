@@ -7,6 +7,7 @@ import {
   Tag,
   ArrowLeft,
 } from "lucide-react";
+import Link from "next/link";
 
 const formatDeadline = (deadline) => {
   if (!deadline) return "No deadline set";
@@ -33,13 +34,13 @@ const OpportunityDetailsPage = async ({ params }) => {
   return (
     <div className="p-6">
       <div className="max-w-2xl mx-auto">
-        <a
+        <Link
           href="/opportunities"
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 mb-4 transition-colors"
         >
           <ArrowLeft size={15} />
           Back to Opportunities
-        </a>
+        </Link>
 
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           {/* Header */}
