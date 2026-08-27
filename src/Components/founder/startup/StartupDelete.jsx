@@ -6,11 +6,13 @@ import { AlertDialog, Button } from "@heroui/react";
 import toast from "react-hot-toast";
 
 export function StartupDelete({ startup }) {
+    const userId = startup?.userId;
+    console.log(userId)
 
     const handleDelete = async () => {
 
        try {
-        await StartupDeleteAction(startup?._id);
+        await StartupDeleteAction(startup?._id,userId);
        } finally{
         toast.success("Startup Deleted")
         location.reload();
@@ -42,7 +44,7 @@ export function StartupDelete({ startup }) {
                                 Cancel
                             </Button>
                             <Button onClick={handleDelete} slot="close" variant="danger">
-                                Delete Project
+                                Delete Startup
                             </Button>
                         </AlertDialog.Footer>
                     </AlertDialog.Dialog>

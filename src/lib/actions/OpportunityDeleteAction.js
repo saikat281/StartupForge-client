@@ -1,14 +1,10 @@
 "use server"
 
-import OpportunityDeleteAction from "./OpportunityDeleteAction";
-
-
-
 const server_url = process.env.SERVER_URL;
 
-export const StartupDeleteAction = async (id,userId) => {
+export const OpportunityDeleteAction = async (userId) => {
     try {
-        const res = await fetch(`${server_url}/mystartup/${id}`, {
+        const res = await fetch(`${server_url}/opportunity/${userId}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         });
@@ -16,14 +12,13 @@ export const StartupDeleteAction = async (id,userId) => {
             throw new Error(`API error: ${res.status}`);
         }
         const result = await res.json();
-        await OpportunityDeleteAction(userId);
         return result;
 
     } catch (error) {
-        console.error("Delete startup error:", error);
+        console.error("Delete opportunity error:", error);
 
         throw error;
     }
 };
 
-export default StartupDeleteAction;
+export default OpportunityDeleteAction;
