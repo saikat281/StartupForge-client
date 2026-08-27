@@ -13,6 +13,7 @@ import {
 import { Pencil, Save, ImageIcon } from "lucide-react";
 import StartupUpdate from "@/lib/actions/StartupUpdate";
 import toast from "react-hot-toast";
+import { Gear } from "@gravity-ui/icons";
 
 const INDUSTRIES = [
     "SaaS",
@@ -92,10 +93,9 @@ const StartupUpdateModal = ({ startup }) => {
                 if (!open) setErrors({});
             }}
         >
-            <Button className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white text-gray-600 text-xs font-medium px-3 py-1.5 hover:bg-gray-50 transition-colors">
-                <Pencil size={13} />
-                Edit
-            </Button>
+            <Button isIconOnly aria-label="Settings" variant="secondary">
+            <Gear />
+          </Button>
 
             <Modal.Backdrop className="bg-black/40">
                 <Modal.Container>

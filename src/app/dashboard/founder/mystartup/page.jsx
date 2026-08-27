@@ -123,6 +123,7 @@ const CreateStartupPage = () => {
     // console.log(upload_image.url)
     await addStartup({ ...data, image: upload_image.url, userId: user?.id, status })
     toast.success('Startup Successfully created!');
+    location.reload();
 
   };
 

@@ -2,6 +2,7 @@ import { Gear, TrashBin } from "@gravity-ui/icons";
 import { Button } from "@heroui/react";
 import { Building2, Tag, TrendingUp } from "lucide-react";
 import StartupUpdateModal from "./StartupUpdateModal";
+import { StartupDelete } from "./StartupDelete";
 
 const STATUS_STYLES = {
   pending: "bg-yellow-50 text-yellow-700",
@@ -80,6 +81,8 @@ const StartupCard = ({ data, UserId }) => {
             <Gear />
           </Button> */}
           <StartupUpdateModal startup={startup}></StartupUpdateModal>
+
+          <StartupDelete startup={startup}></StartupDelete>
         </div>
       </div>
 
