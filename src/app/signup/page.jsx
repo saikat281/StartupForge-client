@@ -53,6 +53,7 @@ const SignupPage = () => {
       const response = await authClient.signUp.email({
         ...user,
         plan: "free",
+        status: "active",
       });
 
       console.log("Signup successful:", response);

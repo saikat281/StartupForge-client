@@ -27,6 +27,9 @@ export const auth = betterAuth({
             skills: {
                 defaultValue: null
             },
+            status: {
+                defaultValue : "active"
+            }
         }
     }
 });
