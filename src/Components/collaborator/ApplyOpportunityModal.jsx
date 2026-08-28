@@ -13,6 +13,7 @@ import {
 import { Send } from "lucide-react";
 import { ApplicationForm } from "@/lib/actions/ApplicationForm";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 const ApplyOpportunityModal = ({ opportunity }) => {
     const [form, setForm] = useState({
@@ -23,6 +24,12 @@ const ApplyOpportunityModal = ({ opportunity }) => {
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
 
+    const { data: session } = authClient.useSession();
+    const user = session?.user;
+    // console.log(user?.email)
+
+    
+
     const handleChange = (field) => (value) => {
         setForm((prev) => ({ ...prev, [field]: value }));
         setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -30,11 +37,7 @@ const ApplyOpportunityModal = ({ opportunity }) => {
 
     const validate = () => {
         const next = {};
-        if (!form.email.trim()) {
-            next.email = "Email is required";
-        } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-            next.email = "Enter a valid email";
-        }
+
         if (!form.portfolioLink.trim()) {
             next.portfolioLink = "Portfolio link is required";
         }
@@ -63,7 +66,7 @@ const ApplyOpportunityModal = ({ opportunity }) => {
             // console.log(date);
 
 
-            await ApplicationForm({ ...form, opportunity_name: opportunity?.roleTitle, startup: opportunity?.startup, status, date })
+            await ApplicationForm({ ...form,email: user?.email ?? "", opportunity_name: opportunity?.roleTitle, startup: opportunity?.startup, status, date, oppUserId: opportunity?.userId })
 
             // await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/applications`, {
             //   method: "POST",
@@ -72,7 +75,7 @@ const ApplyOpportunityModal = ({ opportunity }) => {
             // });
             resetForm();
             close();
-            toast.success('Startup Successfully created!');
+            toast.success('Opportunity Application Successfully sent');
         } finally {
             setSubmitting(false);
         }
@@ -107,17 +110,19 @@ const ApplyOpportunityModal = ({ opportunity }) => {
                                 <Modal.Body className="px-6 py-5 space-y-5">
                                     {/* Applicant Email */}
                                     <TextField
-                                        isRequired
                                         isInvalid={!!errors.email}
-                                        value={form.email}
+                                        value={user?.email}
                                         onChange={handleChange("email")}
                                         className="flex flex-col gap-1.5"
                                     >
                                         <Label className="text-sm font-medium text-gray-700">
-                                            Applicant Email <span className="text-red-500">*</span>
+                                            Applicant Email
                                         </Label>
                                         <Input
                                             type="email"
+
+                                            readOnly
+                                            disabled
                                             placeholder="you@example.com"
                                             className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-gray-300 data-[invalid=true]:border-red-400"
                                         />
