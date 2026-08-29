@@ -7,6 +7,7 @@ import { addOpportunity } from "@/lib/actions/AddOpportunityForm";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { Lock, Zap } from "lucide-react";
 
 const WORK_TYPES = ["Remote", "On-site", "Hybrid"];
 
@@ -30,6 +31,7 @@ const AddOpportunityPage = () => {
     });
     const [errors, setErrors] = useState({});
     const [startupStatus, setStartupStatus] = useState(false);
+    const [cnt, setCnt] = useState(0);
 
     const { data: session } = authClient.useSession();
     const user = session?.user;
@@ -50,7 +52,7 @@ const AddOpportunityPage = () => {
 
                 const data = await res.json();
 
-                console.log(data)
+                // console.log(data)
                 // data.forEach(d => console.log("d-> user id: ",d.userId))
 
                 if (data?.some(d => d?.userId == user?.id && d?.status == "approved")) {
@@ -61,7 +63,18 @@ const AddOpportunityPage = () => {
             }
         };
 
+        const fetchOpportunity = async () => {
+            // For total opportunity
+            const res2 = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/opportunity`)
+            const opportunityData = await res2.json();
+
+            const filterOppData = opportunityData?.filter(oppdata => oppdata?.userId == user?.id)
+            console.log(filterOppData.length);
+            setCnt(filterOppData.length);
+        }
+
         fetchStartup();
+        fetchOpportunity();
     }, [user?.id]);
 
     // console.log(startupStatus);
@@ -110,6 +123,8 @@ const AddOpportunityPage = () => {
 
         await addOpportunity({ ...data, userId: user?.id, startup: findStartup?.name })
         toast.success('Opportunity Successfully created!');
+        setCnt(cnt + 1);
+
     };
 
     return (
@@ -146,11 +161,39 @@ const AddOpportunityPage = () => {
                         </p>
                     </div>
                 </div>
+            ) : user?.plan === "free" && cnt >= 3 ? (
+                <div className="rounded-xl border border-orange-200 bg-orange-50 p-5 shadow-sm">
+                    <div className="flex items-start gap-4">
+                        <div className="h-11 w-11 shrink-0 rounded-lg bg-orange-100 flex items-center justify-center">
+                            <Lock className="text-orange-600" size={20} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-base font-semibold text-orange-900">
+                                Premium Required
+                            </p>
+                            <p className="text-sm text-orange-700 mt-1">
+                                You have used all 3 opportunity slots. Upgrade to post unlimited
+                                opportunities.
+                            </p>
+                            <Link href={'/pricing'}>
+                                <button
+                                    type="button"
+                                    className="flex items-center gap-2 rounded-lg bg-orange-600 text-white text-sm font-medium px-5 py-2.5 mt-4 hover:bg-orange-700 transition-colors shadow-sm cursor-pointer"
+                                >
+                                    <Zap size={15} />
+                                    Upgrade — $14
+                                </button>
+                            </Link>
+
+                        </div>
+                    </div>
+                </div>
             ) : (
                 <div className="max-w-2xl mx-auto">
                     <div className="mb-6">
 
                         <h1 className="text-xl font-semibold text-gray-900">Add Opportunity</h1>
+                        <p className={`${cnt >= 3 || user?.plan == "pro" && "hidden"} text-orange-600`}>Post a role for your startup. ({cnt}/3 free slots used)</p>
                         <p className="text-sm text-gray-500 mt-1">
                             Fill in the details below to post a new opportunity.
                         </p>
