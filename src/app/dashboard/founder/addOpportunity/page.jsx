@@ -51,6 +51,8 @@ const AddOpportunityPage = () => {
                 }
 
                 const data = await res.json();
+                // console.log("StartupData:",data);
+
 
                 // console.log(data)
                 // data.forEach(d => console.log("d-> user id: ",d.userId))
@@ -119,9 +121,9 @@ const AddOpportunityPage = () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`)
         const mystartup = await res.json();
         const findStartup = mystartup?.find(data => data?.userId == user?.id)
-        // console.log(findStartup.name);
+         console.log(findStartup);
 
-        await addOpportunity({ ...data, userId: user?.id, startup: findStartup?.name })
+        await addOpportunity({ ...data, userId: user?.id, startup: findStartup?.name,startupId: findStartup?._id })
         toast.success('Opportunity Successfully created!');
         setCnt(cnt + 1);
 
