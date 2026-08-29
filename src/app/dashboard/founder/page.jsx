@@ -1,35 +1,42 @@
 import { BriefcaseBusiness, CircleCheckBig, UserRound } from "lucide-react";
-import React from "react";
 
-const STATS = [
-  {
-    label: "Total Opportunities",
-    value: 0,
-    icon: BriefcaseBusiness,
-    iconBg: "bg-blue-50",
-    iconColor: "text-blue-600",
-  },
-  {
-    label: "Total Applications",
-    value: 0,
-    icon: UserRound,
-    iconBg: "bg-purple-50",
-    iconColor: "text-purple-600",
-  },
-  {
-    label: "Accepted Members",
-    value: 0,
-    icon: CircleCheckBig,
-    iconBg: "bg-green-50",
-    iconColor: "text-green-600",
-  },
-];
 
-const FounderOverviewPage = async() => {
+const FounderOverviewPage = async () => {
 
-  // const res = await fetch(`${process.env.SERVER_URL}/mystartup`);
-  // const data = await res.json();
-  // console.log(data.length);
+  const res1 = await fetch(`${process.env.SERVER_URL}/opportunity`);
+  const opportunityData = await res1.json();
+
+  const res2 = await fetch(`${process.env.SERVER_URL}/application`);
+  const applicationData = await res2.json();
+
+  const acceptedData = applicationData?.filter(data=> data?.status === "accepted")
+
+  console.log(applicationData);
+
+  const STATS = [
+    {
+      label: "Total Opportunities",
+      value: opportunityData.length,
+      icon: BriefcaseBusiness,
+      iconBg: "bg-blue-50",
+      iconColor: "text-blue-600",
+    },
+    {
+      label: "Total Applications",
+      value: applicationData.length,
+      icon: UserRound,
+      iconBg: "bg-purple-50",
+      iconColor: "text-purple-600",
+    },
+    {
+      label: "Accepted Members",
+      value: acceptedData.length,
+      icon: CircleCheckBig,
+      iconBg: "bg-green-50",
+      iconColor: "text-green-600",
+    },
+  ];
+
 
   return (
     <div className="p-6">
