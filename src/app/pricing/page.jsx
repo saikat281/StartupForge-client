@@ -56,8 +56,8 @@ const PricingPage = () => {
                         </div>
                         <p className="text-lg font-semibold mt-4">Pro Plan</p>
                         <div className="flex items-end gap-1 mt-1">
-                            <span className="text-3xl font-bold">$19</span>
-                            <span className="text-sm text-gray-300 mb-1">/ month</span>
+                            <span className="text-3xl font-bold">$14</span>
+                            
                         </div>
                     </div>
 
