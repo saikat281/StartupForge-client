@@ -1,18 +1,38 @@
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 import { Users, Building2, Briefcase, DollarSign } from "lucide-react";
 
 const SERVER_URL = process.env.SERVER_URL;
 
 const AdminOverviewPage = async () => {
-    const res1 = await fetch(`${SERVER_URL}/users`);
+
+    const token = await getTokenServer();
+
+
+    const res1 = await fetch(`${SERVER_URL}/users`, {
+        headers: {
+            authorization: `Bearer ${token}`,
+
+        }
+    });
     const usersData = await res1.json();
 
-    const res2 = await fetch(`${SERVER_URL}/mystartup`);
+    const res2 = await fetch(`${SERVER_URL}/mystartup`, {
+        headers: {
+            authorization: `Bearer ${token}`,
+
+        }
+    });
     const startupData = await res2.json();
 
     const res3 = await fetch(`${SERVER_URL}/opportunity`);
     const opportunitiesData = await res3.json();
 
-    const res4 = await fetch(`${SERVER_URL}/payment`);
+    const res4 = await fetch(`${SERVER_URL}/payment`, {
+        headers: {
+            authorization: `Bearer ${token}`,
+
+        }
+    });
     const paymentData = await res4.json();
 
     let totalRevenue = 0;
@@ -37,7 +57,7 @@ const AdminOverviewPage = async () => {
         },
         {
             label: "Total Opportunities",
-            value: opportunitiesData?.length ?? 0,
+            value: opportunitiesData?.totalData ?? 0,
             icon: Briefcase,
             iconBg: "bg-orange-50",
             iconColor: "text-orange-600",

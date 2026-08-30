@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { Lock, Zap } from "lucide-react";
+import { getMyStartups } from "@/lib/actions/GetMyStartupAction";
 
 const WORK_TYPES = ["Remote", "On-site", "Hybrid"];
 
@@ -42,15 +43,8 @@ const AddOpportunityPage = () => {
 
         const fetchStartup = async () => {
             try {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`
-                );
-
-                if (!res.ok) {
-                    throw new Error("Failed to fetch startup");
-                }
-
-                const data = await res.json();
+                
+                const data = await getMyStartups();
                 // console.log("StartupData:",data);
 
 

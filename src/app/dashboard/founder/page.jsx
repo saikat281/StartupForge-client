@@ -1,15 +1,25 @@
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 import { BriefcaseBusiness, CircleCheckBig, UserRound } from "lucide-react";
 
 
 const FounderOverviewPage = async () => {
+  const token = await getTokenServer();
+
 
   const res1 = await fetch(`${process.env.SERVER_URL}/opportunity`);
-  const opportunityData = await res1.json();
+  const oppdata = await res1.json();
+  const opportunityData = oppdata.result;
 
-  const res2 = await fetch(`${process.env.SERVER_URL}/application`);
+
+  const res2 = await fetch(`${process.env.SERVER_URL}/application`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+
+    }
+  });
   const applicationData = await res2.json();
 
-  const acceptedData = applicationData?.filter(data=> data?.status === "accepted")
+  const acceptedData = applicationData?.filter(data => data?.status === "accepted")
 
   console.log(applicationData);
 

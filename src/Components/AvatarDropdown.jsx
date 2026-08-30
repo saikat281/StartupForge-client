@@ -12,7 +12,7 @@ export function AvatarDropdown() {
 
     const handleSignout = async () => {
         authClient.signOut()
-        redirect("/")
+        location.reload();
     };
 
     return (
@@ -21,9 +21,9 @@ export function AvatarDropdown() {
                 <Avatar>
                     <Avatar.Image
                         alt="Junior Garcia"
-                        src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
+                        src={user?.image} 
                     />
-                    <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                    <Avatar.Fallback delayMs={600}>{user?.name[0]}</Avatar.Fallback>
                 </Avatar>
             </Dropdown.Trigger>
             <Dropdown.Popover>
@@ -32,9 +32,9 @@ export function AvatarDropdown() {
                         <Avatar size="sm">
                             <Avatar.Image
                                 alt="Jane"
-                                src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
+                                src={user?.image}
                             />
-                            <Avatar.Fallback delayMs={600}>JD</Avatar.Fallback>
+                            <Avatar.Fallback delayMs={600}>{user?.name[0]}</Avatar.Fallback>
                         </Avatar>
                         <div className="flex flex-col gap-0">
                             <p className="text-sm leading-5 font-medium">{user?.name}</p>

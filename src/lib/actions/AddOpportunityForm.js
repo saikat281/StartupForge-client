@@ -1,13 +1,19 @@
 "use server"
 
+import { getTokenServer } from "./getTokenServer";
+
 const server_url = process.env.SERVER_URL;
 
 export const addOpportunity = async (data) => {
+
+    const token = await getTokenServer();
+
     try {
         const res = await fetch(`${server_url}/opportunity`, {
-            method: "POSt",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                 authorization : `Bearer ${token}`
             },
             body: JSON.stringify(data),
         });

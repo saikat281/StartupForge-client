@@ -1,12 +1,20 @@
 "use server"
 
+import { getTokenServer } from "./getTokenServer";
+
 const server_url = process.env.SERVER_URL;
 
-export const StartupUpdate = async(data,id) => {
+export const StartupUpdate = async (data, id) => {
+    const token = await getTokenServer();
+
     try {
         const res = await fetch(`${server_url}/mystartup/${id}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`,
+
+            },
             body: JSON.stringify(data),
         });
         if (!res.ok) {

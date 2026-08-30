@@ -1,8 +1,15 @@
 import ManageStartupsTable from "@/Components/admin/ManageStartup";
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 
 
 const AdminManageStartupsPage = async () => {
-  const res = await fetch(`${process.env.SERVER_URL}/mystartup`);
+  const token = await getTokenServer();
+  const res = await fetch(`${process.env.SERVER_URL}/mystartup`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+
+    }
+  });
   const startupData = await res.json();
 
   return (

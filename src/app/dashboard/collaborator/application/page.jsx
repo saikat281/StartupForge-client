@@ -1,3 +1,4 @@
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 import { ClipboardList, ExternalLink } from "lucide-react";
 
 const formatDate = (dateStr) => {
@@ -38,7 +39,14 @@ const StatusBadge = ({ status }) => {
 };
 
 const CollaboratorApplicationPage = async () => {
-    const res = await fetch(`${process.env.SERVER_URL}/application`);
+    const token = await getTokenServer();
+
+    const res = await fetch(`${process.env.SERVER_URL}/application`, {
+        headers: {
+            authorization: `Bearer ${token}`,
+
+        }
+    });
     const applications = await res.json();
 
     return (

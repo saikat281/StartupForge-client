@@ -1,13 +1,17 @@
 "use server"
 
+import { getTokenServer } from "./getTokenServer";
+
 const server_url = process.env.SERVER_URL;
 
 export const payment = async (data) => {
+    const token = await getTokenServer();
     try {
         const res = await fetch(`${server_url}/payment`, {
-            method: "POSt",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(data),
         });

@@ -2,10 +2,13 @@
 
 import { headers } from "next/headers";
 import { auth } from "../auth";
+import { getTokenServer } from "./getTokenServer";
 
 const server_url = process.env.SERVER_URL;
 
 export const ProfileUpdateForm = async (data) => {
+    const token = await getTokenServer();
+
     const session = await auth.api.getSession({
         headers: await headers(),
     });
@@ -14,7 +17,9 @@ export const ProfileUpdateForm = async (data) => {
         const res = await fetch(`${server_url}/profile/${user.id}`, {
             method: "PATCH",
             headers: {
-                "content-type": "application/json"
+                "content-type": "application/json",
+                authorization: `Bearer ${token}`,
+
             },
             body: JSON.stringify(data)
         });

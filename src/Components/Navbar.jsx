@@ -1,5 +1,10 @@
+"use client"
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
 import { Flame, Menu } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { AvatarDropdown } from "./AvatarDropdown";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -8,6 +13,22 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
+
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
+
+  const pathname = usePathname();
+
+  if (pathname.includes('dashboard')) {
+    return null;
+  }
+
+  const handleSignout = async () => {
+    authClient.signOut()
+    location.reload()
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10  backdrop-blur-md">
       <nav className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
@@ -38,22 +59,33 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="/signin"
-            className="text-sm font-medium text-[#9CA8BC] hover:text-black transition-colors px-3 py-2"
+            className={`${session && "hidden"} text-sm font-medium text-[#9CA8BC] hover:text-black transition-colors px-3 py-2`}
           >
             Log in
           </a>
           <a
             href="/signup"
-            className="text-sm font-medium text-[#0B1424] bg-[#2F6FED] hover:bg-[#4C86FF] transition-colors rounded-lg px-4 py-2"
+            className={`${session && "hidden"} text-sm font-medium text-[#0B1424] bg-[#2F6FED] hover:bg-[#4C86FF] transition-colors rounded-lg px-4 py-2`}
           >
             Get Started
           </a>
+
+          <Button
+            onClick={handleSignout}
+            className={`${!session && "hidden"} text-sm font-medium text-white bg-black hover:bg-gray-700 transition-colors rounded-lg px-4 py-2 cursor-pointer`}
+          >
+            Log Out
+          </Button>
         </div>
 
         {/* Mobile toggle (static, non-functional placeholder) */}
         <button className="md:hidden text-white p-2" aria-label="Open menu">
           <Menu size={22} />
         </button>
+        <div className={`${!session && "hidden"}`}>
+          <AvatarDropdown></AvatarDropdown>
+        </div>
+
       </nav>
     </header>
   );

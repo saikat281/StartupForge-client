@@ -1,4 +1,5 @@
 import ApplyOpportunityModal from "@/Components/collaborator/ApplyOpportunityModal";
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 import {
   Briefcase,
   MapPin,
@@ -21,8 +22,15 @@ const formatDeadline = (deadline) => {
 };
 
 const OpportunityDetailsPage = async ({ params }) => {
+  const token = await getTokenServer();
+
   const { id } = await params;
-  const res = await fetch(`${process.env.SERVER_URL}/opportunity/${id}`);
+  const res = await fetch(`${process.env.SERVER_URL}/opportunity/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+
+    }
+  });
   const opportunity = await res.json();
   // console.log(opportunity)
 

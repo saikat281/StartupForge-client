@@ -19,6 +19,8 @@ import toast from "react-hot-toast";
 import { imageUpload } from "@/lib/imageUpload";
 import { authClient } from "@/lib/auth-client";
 import StartupCard from "@/Components/founder/startup/StartupCard";
+import { getMyStartups } from "@/lib/actions/GetMyStartupAction";
+
 
 const INDUSTRIES = [
   "SaaS",
@@ -77,15 +79,8 @@ const CreateStartupPage = () => {
 
     const fetchStartup = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch startup");
-        }
-
-        const data = await res.json();
+        
+        const data = await getMyStartups()
 
         if (data.length > 0) {
           setStartup(data);

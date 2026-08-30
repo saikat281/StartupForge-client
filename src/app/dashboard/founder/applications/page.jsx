@@ -1,8 +1,16 @@
 import FounderApplicationsTable from "@/Components/founder/applications/FounderApplicationsTable";
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 
 
 const FounderApplicationsPage = async () => {
-  const res = await fetch(`${process.env.SERVER_URL}/application`);
+  const token = await getTokenServer();
+
+  const res = await fetch(`${process.env.SERVER_URL}/application`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+
+    }
+  });
   const ApplicationData = await res.json();
 
   return (

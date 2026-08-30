@@ -3,11 +3,11 @@ import { Button, Card, Link } from "@heroui/react";
 
 export function ManageOpportunityTable({ user }) {
     return (
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 space-y-6">
             {
                 user?.map((data) => {
                     return (
-                        <Card key={data?._id} className=" flex flex-row justify-between items-center w-[400px]">
+                        <Card key={data?._id} className=" flex flex-row justify-between items-center  w-[400px]">
                             <div>
                                 <ShoppingBasket className="text-primary size-6" role="img"></ShoppingBasket>
                                 <Card.Header>

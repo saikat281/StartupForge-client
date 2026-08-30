@@ -1,12 +1,19 @@
 "use server"
 
+import { getTokenServer } from "./getTokenServer";
+
 const server_url = process.env.SERVER_URL;
 
 export const AdminManageUsersTableStatus = async (newStatus, id) => {
+    const token = await getTokenServer();
     try {
         const res = await fetch(`${server_url}/users/${id}`, {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`,
+            },
+
             body: JSON.stringify({ status: newStatus }),
         });
         if (!res.ok) {
@@ -23,3 +30,4 @@ export const AdminManageUsersTableStatus = async (newStatus, id) => {
 };
 
 export default AdminManageUsersTableStatus;
+

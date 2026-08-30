@@ -1,10 +1,18 @@
 import AdminManageUsersTable from "@/Components/admin/AdminManageUserTable";
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 
 
 const AdminManageUsersPage = async () => {
-    const res = await fetch(`${process.env.SERVER_URL}/users`);
+    const token = await getTokenServer();
+    
+    const res = await fetch(`${process.env.SERVER_URL}/users`, {
+        headers: {
+            authorization: `Bearer ${token}`,
+
+        }
+    });
     const usersData = await res.json();
-    const filterUserData = usersData?.filter(data=>data?.role != "admin");
+    const filterUserData = usersData?.filter(data => data?.role != "admin");
     // console.log(filterUserData);
 
     return (

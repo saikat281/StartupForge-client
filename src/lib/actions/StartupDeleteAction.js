@@ -6,11 +6,15 @@ import OpportunityDeleteAction from "./OpportunityDeleteAction";
 
 const server_url = process.env.SERVER_URL;
 
-export const StartupDeleteAction = async (id,userId) => {
+export const StartupDeleteAction = async (id, userId) => {
     try {
         const res = await fetch(`${server_url}/mystartup/${id}`, {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`,
+
+            },
         });
         if (!res.ok) {
             throw new Error(`API error: ${res.status}`);

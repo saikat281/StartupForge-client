@@ -1,3 +1,4 @@
+import { getTokenServer } from "@/lib/actions/getTokenServer";
 import { Receipt, Copy } from "lucide-react";
 
 const STATUS_STYLES = {
@@ -25,7 +26,13 @@ const truncateId = (id) => {
 };
 
 const AdminTransactionsPage = async () => {
-  const res = await fetch(`${process.env.SERVER_URL}/payment`);
+  const token = await getTokenServer();
+  const res = await fetch(`${process.env.SERVER_URL}/payment`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+
+    }
+  });
   const paymentData = await res.json();
 
   return (

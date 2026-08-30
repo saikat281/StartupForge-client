@@ -1,4 +1,6 @@
+"use client"
 import { Flame, LogoGithub, LogoLinkedin, XmarkShape } from "@gravity-ui/icons";
+import { usePathname } from "next/navigation";
 
 
 const FOOTER_COLUMNS = [
@@ -17,6 +19,11 @@ const FOOTER_COLUMNS = [
 ];
 
 const Footer = () => {
+  const pathname = usePathname();
+
+  if (pathname.includes('dashboard')) {
+    return null;
+  }
   return (
     <footer className="bg-[#0B1424] text-[#9CA8BC] border-t border-white/10">
       <div className="max-w-6xl mx-auto px-6 py-14">
