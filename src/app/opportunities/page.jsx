@@ -1,4 +1,3 @@
-
 import { Button, Input, Label, Pagination, SearchField } from "@heroui/react";
 import {
   Briefcase,
@@ -7,6 +6,7 @@ import {
   CalendarDays,
   Tag,
   Search,
+  Filter,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -21,6 +21,10 @@ const formatDeadline = (deadline) => {
   });
 };
 
+
+
+const WORK_TYPE_OPTIONS = ["Remote", "On-site", "Hybrid"];
+
 const OpportunitiesPage = async ({ searchParams }) => {
 
   const searchQuery = await searchParams;
@@ -29,8 +33,13 @@ const OpportunitiesPage = async ({ searchParams }) => {
   const limit = searchQuery.limit || 10;
   const searchText = searchQuery.search || "";
 
+  // New: read selected filters from the URL (single value each)
+  const selectedWorkType = searchQuery.workType || ""
+  console.log(selectedWorkType)
 
-  const res = await fetch(`${process.env.SERVER_URL}/opportunity?search=${searchText}&page=${page}&limit=${limit}`);
+  const res = await fetch(`${process.env.SERVER_URL}/opportunity?search=${searchText}&page=${page}&limit=${limit}&workType=${selectedWorkType}`);
+
+
   const opportunitiesObject = await res.json();
   const opportunities = opportunitiesObject.result
 
@@ -56,15 +65,49 @@ const OpportunitiesPage = async ({ searchParams }) => {
         </div>
 
         <div>
-            <form action={'/opportunities'}>
-              <Input name="search" placeholder="Search opportunities"/>
-              <Button type="submit">
-                <Search/> search
-              </Button>
-              
-            </form>
+          <form action={'/opportunities'}>
+            <Input name="search" placeholder="Search opportunities" />
+            <Button type="submit">
+              <Search /> search
+            </Button>
+
+          </form>
         </div>
       </div>
+
+      {/* New: Filter section (Industry + Work Type as dropdowns) */}
+      <form
+        action="/opportunities"
+        className="mb-6 flex flex-wrap items-end gap-4 rounded-xl border border-gray-200 bg-white p-4"
+      >
+        
+
+        <div className="flex flex-col gap-1">
+          <Label htmlFor="workType" className="text-xs font-medium text-gray-600">
+            Work Type
+          </Label>
+          <select
+            id="workType"
+            name="workType"
+            defaultValue={selectedWorkType}
+            className="rounded-lg border border-gray-300 text-sm px-3 py-2 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900"
+          >
+            <option value="">All Work Types</option>
+            {WORK_TYPE_OPTIONS.map((workType) => (
+              <option key={workType} value={workType}>
+                {workType}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <input type="hidden" name="page" value="1" />
+
+        <Button type="submit" className="flex items-center gap-2">
+          <Filter size={14} />
+          Filter
+        </Button>
+      </form>
 
       {(!opportunities || opportunities.length === 0) ? (
         <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
