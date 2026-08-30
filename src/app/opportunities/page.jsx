@@ -1,3 +1,5 @@
+
+import { Pagination } from "@heroui/react";
 import {
   Briefcase,
   MapPin,
@@ -18,10 +20,27 @@ const formatDeadline = (deadline) => {
   });
 };
 
-const OpportunitiesPage = async () => {
-  const res = await fetch(`${process.env.SERVER_URL}/opportunity`);
-  const opportunities = await res.json();
-  console.log(opportunities)
+const OpportunitiesPage = async ({ searchParams }) => {
+
+  const searchQuery = await searchParams;
+  const page = searchQuery.page || 1;
+  console.log(page)
+  const limit = searchQuery.limit || 10;
+
+
+  const res = await fetch(`${process.env.SERVER_URL}/opportunity?page=${page}&limit=${limit}`);
+  const opportunitiesObject = await res.json();
+  const opportunities = opportunitiesObject.result
+
+  const totalOpportunity = opportunitiesObject.total_page;
+  // console.log(totalOpportunity);
+
+  const pages = [];
+
+  for (let i = 1; i <= totalOpportunity; i++) {
+    pages.push(i);
+  }
+  // console.log(pages);
 
   return (
     <div className="p-6">
@@ -105,6 +124,49 @@ const OpportunitiesPage = async () => {
           })}
         </div>
       )}
+
+      {/* Pagination */}
+      <div className="w-full flex justify-center  mt-[60px]  mb-[60px] ">
+        <div >
+          <Pagination size="md">
+            <Pagination.Summary>
+
+            </Pagination.Summary>
+            <Pagination.Content>
+              <Pagination.Item>
+                <Pagination.Previous
+                  isDisabled={page == 1}
+                >
+                  <Link className="flex items-center" href={`/opportunities?page=${page - 1}`}>
+                    <Pagination.PreviousIcon />
+                    Prev
+                  </Link>
+                </Pagination.Previous>
+              </Pagination.Item>
+              {pages.map((p) => (
+                <Link key={p} href={`/opportunities?page=${p}`}>
+                  <Pagination.Item >
+                    <Pagination.Link isActive={p == page} className={`${p == page && "bg-black text-white"}`} >
+                      {p}
+                    </Pagination.Link>
+                  </Pagination.Item>
+                </Link>
+              ))}
+              <Pagination.Item>
+                <Pagination.Next
+                  isDisabled={page == totalOpportunity}
+                >
+                  <Link className="flex items-center" href={`/opportunities?page=${page + 1}`} >
+                    Next
+                    <Pagination.NextIcon />
+                  </Link>
+                </Pagination.Next>
+              </Pagination.Item>
+            </Pagination.Content>
+          </Pagination>
+        </div>
+
+      </div>
     </div>
   );
 };

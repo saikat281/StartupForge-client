@@ -64,9 +64,9 @@ const SignupPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="w-full max-w-md">
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-semibold text-gray-900">Create your account</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Login your account</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Sign up to get started.
+            Sign in to get started.
           </p>
         </div>
 
@@ -130,13 +130,13 @@ const SignupPage = () => {
             className="w-full flex items-center justify-center gap-2 rounded-lg bg-gray-900 text-white text-sm font-medium px-5 py-2.5 hover:bg-gray-800 transition-colors"
           >
             <UserPlus size={16} />
-            Sign Up
+            Sign In
           </button>
 
           <p className="text-center text-sm text-gray-500">
-            Already have an account?{" "}
-            <a href="/login" className="font-medium text-gray-900 hover:underline">
-              Log in
+            No account?{" "}
+            <a href="/signup" className="font-medium text-gray-900 hover:underline">
+              Sign up
             </a>
           </p>
         </form>

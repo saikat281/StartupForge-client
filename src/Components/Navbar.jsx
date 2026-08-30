@@ -37,7 +37,7 @@ const Navbar = () => {
         {/* Actions */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="/login"
+            href="/signin"
             className="text-sm font-medium text-[#9CA8BC] hover:text-black transition-colors px-3 py-2"
           >
             Log in
