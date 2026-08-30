@@ -1,11 +1,12 @@
 
-import { Pagination } from "@heroui/react";
+import { Button, Input, Label, Pagination, SearchField } from "@heroui/react";
 import {
   Briefcase,
   MapPin,
   Clock,
   CalendarDays,
   Tag,
+  Search,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -23,12 +24,13 @@ const formatDeadline = (deadline) => {
 const OpportunitiesPage = async ({ searchParams }) => {
 
   const searchQuery = await searchParams;
-  const page = searchQuery.page || 1;
+  const page = searchQuery.page || 1;  //string
   console.log(page)
   const limit = searchQuery.limit || 10;
+  const searchText = searchQuery.search || "";
 
 
-  const res = await fetch(`${process.env.SERVER_URL}/opportunity?page=${page}&limit=${limit}`);
+  const res = await fetch(`${process.env.SERVER_URL}/opportunity?search=${searchText}&page=${page}&limit=${limit}`);
   const opportunitiesObject = await res.json();
   const opportunities = opportunitiesObject.result
 
@@ -44,11 +46,24 @@ const OpportunitiesPage = async ({ searchParams }) => {
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-900">Opportunities</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Browse open roles posted by startups.
-        </p>
+
+      <div className="flex justify-between items-center">
+        <div className="mb-6">
+          <h1 className="text-xl font-semibold text-gray-900">Opportunities</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Browse open roles posted by startups.
+          </p>
+        </div>
+
+        <div>
+            <form action={'/opportunities'}>
+              <Input name="search" placeholder="Search opportunities"/>
+              <Button type="submit">
+                <Search/> search
+              </Button>
+              
+            </form>
+        </div>
       </div>
 
       {(!opportunities || opportunities.length === 0) ? (
@@ -60,6 +75,7 @@ const OpportunitiesPage = async ({ searchParams }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
           {opportunities.map((opportunity) => {
             const skillTags = (opportunity.skills || "")
               .split(",")
