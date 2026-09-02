@@ -9,7 +9,7 @@ const CollaboratorProfilePage = async () => {
     headers: await headers(),
   });
   const user = session?.user;
-  console.log(user)
+  // console.log(user)
 
   return <CollaboratorProfileForm user={user} />;
 };

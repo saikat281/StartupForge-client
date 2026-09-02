@@ -8,20 +8,18 @@ import { headers } from "next/headers";
 const ManageOpportunitiesPage = async () => {
 
 
-
-
     const session = await auth.api.getSession({
         headers: await headers(),
     });
     const user = session?.user;
     //   console.log(user)  //id //_id
 
-    const res = await fetch(`${process.env.SERVER_URL}/opportunity`);
+    const res = await fetch(`${process.env.SERVER_URL}/opportunities`);
     const Userdata = await res.json();
     // console.log(Userdata); 
 
-    const filterData = Userdata?.result?.filter(data => data?.userId == user?.id)
-    console.log(filterData)
+    const filterData = Userdata?.filter(data => data?.userId == user?.id)
+    // console.log(filterData.id);
 
     return (
         <div>

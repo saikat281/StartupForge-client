@@ -48,7 +48,7 @@ const SignupPage = () => {
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
-    console.log(user)
+    // console.log(user)
     try {
       const response = await authClient.signUp.email({
         ...user,

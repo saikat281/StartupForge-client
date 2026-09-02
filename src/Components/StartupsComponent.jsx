@@ -6,7 +6,7 @@ import { Building2, Tag } from "lucide-react";
 import Link from "next/link";
 
 const StartupsComponent = ({ startups }) => {
-    console.log(startups);
+    // console.log(startups);
     if (!startups || startups.length === 0) {
         return (
             <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">

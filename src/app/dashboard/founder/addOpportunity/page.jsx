@@ -43,7 +43,7 @@ const AddOpportunityPage = () => {
 
         const fetchStartup = async () => {
             try {
-                
+
                 const data = await getMyStartups();
                 // console.log("StartupData:",data);
 
@@ -61,11 +61,12 @@ const AddOpportunityPage = () => {
 
         const fetchOpportunity = async () => {
             // For total opportunity
-            const res2 = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/opportunity`)
+            const res2 = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/opportunities`)
             const opportunityData = await res2.json();
+            // console.log(opportunityData)
 
             const filterOppData = opportunityData?.filter(oppdata => oppdata?.userId == user?.id)
-            console.log(filterOppData.length);
+            // console.log(filterOppData.length);
             setCnt(filterOppData.length);
         }
 
@@ -105,21 +106,25 @@ const AddOpportunityPage = () => {
 
     // Handle------------------------------
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        try {
+            e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
-        const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(e.currentTarget);
+            const data = Object.fromEntries(formData.entries());
 
-        // console.log(data);
+            // console.log(data);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`)
-        const mystartup = await res.json();
-        const findStartup = mystartup?.find(data => data?.userId == user?.id)
-         console.log(findStartup);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/mystartup`)
+            const mystartup = await res.json();
+            const findStartup = mystartup?.find(data => data?.userId == user?.id)
+            //  console.log(findStartup);
 
-        await addOpportunity({ ...data, userId: user?.id, startup: findStartup?.name,startupId: findStartup?._id })
-        toast.success('Opportunity Successfully created!');
-        setCnt(cnt + 1);
+            await addOpportunity({ ...data, userId: user?.id, startup: findStartup?.name, startupId: findStartup?._id })
+            toast.success('Opportunity Successfully created!');
+            setCnt(cnt + 1);
+        } catch (error) {
+            console.log(error)
+        }
 
     };
 

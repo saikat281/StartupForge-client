@@ -84,10 +84,10 @@ const CreateStartupPage = () => {
 
         if (data.length > 0) {
           setStartup(data);
-          console.log("Startup exists");
+          // console.log("Startup exists");
         } else {
           setStartup([]);
-          console.log("Startup doesn't exist");
+          // console.log("Startup doesn't exist");
         }
       } catch (error) {
         console.error(error);

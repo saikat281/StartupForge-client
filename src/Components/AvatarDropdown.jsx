@@ -2,6 +2,7 @@
 import { authClient } from "@/lib/auth-client";
 import { ArrowRightFromSquare, Gear, Persons } from "@gravity-ui/icons";
 import { Avatar, Dropdown, Label } from "@heroui/react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export function AvatarDropdown() {
@@ -11,8 +12,8 @@ export function AvatarDropdown() {
     //   console.log(user);
 
     const handleSignout = async () => {
-        authClient.signOut()
-        location.reload();
+        await authClient.signOut()
+        redirect('/')
     };
 
     return (
@@ -21,7 +22,7 @@ export function AvatarDropdown() {
                 <Avatar>
                     <Avatar.Image
                         alt="Junior Garcia"
-                        src={user?.image} 
+                        src={user?.image}
                     />
                     <Avatar.Fallback delayMs={600}>{user?.name[0]}</Avatar.Fallback>
                 </Avatar>
@@ -44,8 +45,12 @@ export function AvatarDropdown() {
                 </div>
                 <Dropdown.Menu>
                     <Dropdown.Item id="dashboard" textValue="Dashboard">
-                        <Label>Dashboard</Label>
+                        <Link href={`/dashboard/${user?.role}`}>
+                            <Label>Dashboard</Label>
+                        </Link>
                     </Dropdown.Item>
+
+
                     <Dropdown.Item id="profile" textValue="Profile">
                         <Label>Profile</Label>
                     </Dropdown.Item>

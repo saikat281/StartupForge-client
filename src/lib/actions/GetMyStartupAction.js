@@ -1,21 +1,14 @@
 "use server";
 
-import { getTokenServer } from "./getTokenServer";
+
 
 
 
 export const getMyStartups = async () => {
-  const token = await getTokenServer();
+  
 
   const res = await fetch(
-    `${process.env.SERVER_URL}/mystartup`,
-    {
-      
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+    `${process.env.SERVER_URL}/mystartup`);
 
   if (!res.ok) {
     const error = await res.text();

@@ -70,7 +70,7 @@ const StartupUpdateModal = ({ startup }) => {
 
         setSaving(true);
         try {
-            console.log("Updating startup:", updatedStartup);
+            // console.log("Updating startup:", updatedStartup);
 
 
             await StartupUpdate(updatedStartup,startup._id)

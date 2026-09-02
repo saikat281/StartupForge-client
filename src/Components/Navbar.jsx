@@ -3,7 +3,7 @@ import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
 import { Flame, Menu } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { AvatarDropdown } from "./AvatarDropdown";
 
 const NAV_LINKS = [
@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user);
+  // console.log(user);
 
   const pathname = usePathname();
 
@@ -25,8 +25,8 @@ const Navbar = () => {
   }
 
   const handleSignout = async () => {
-    authClient.signOut()
-    location.reload()
+    await authClient.signOut()
+   redirect('/')
   };
 
   return (

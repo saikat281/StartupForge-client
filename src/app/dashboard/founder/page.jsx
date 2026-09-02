@@ -6,9 +6,8 @@ const FounderOverviewPage = async () => {
   const token = await getTokenServer();
 
 
-  const res1 = await fetch(`${process.env.SERVER_URL}/opportunity`);
-  const oppdata = await res1.json();
-  const opportunityData = oppdata.result;
+  const res1 = await fetch(`${process.env.SERVER_URL}/opportunities`);
+  const opportunityData = await res1.json();
 
 
   const res2 = await fetch(`${process.env.SERVER_URL}/application`, {
@@ -21,7 +20,7 @@ const FounderOverviewPage = async () => {
 
   const acceptedData = applicationData?.filter(data => data?.status === "accepted")
 
-  console.log(applicationData);
+  // console.log(applicationData);
 
   const STATS = [
     {

@@ -18,5 +18,5 @@ export async function proxy(request) {
 // export default function proxy(request) { ... }
 
 export const config = {
-    matcher: ['/dashboard','/founder','/founder/addOpportunity','/founder/applications','/founder/manageOpportunities','/founder/mystartup','/collaborator','/collaborator/application','/collaborator/profile','/admin','/admin/manageStartups','/admin/manageUsers','/admin/transactions']
+    matcher: ['/dashboard']
 }

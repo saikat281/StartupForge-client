@@ -44,7 +44,7 @@ const AdminManageUsersTable = ({ users }) => {
 
         setLoadingId(id);
         try {
-            console.log(`Updating user ${id} status to:`, newStatus);
+            // console.log(`Updating user ${id} status to:`, newStatus);
             await AdminManageUsersTableStatus(newStatus,id)
             // await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/${id}`, {
             //   method: "PATCH",

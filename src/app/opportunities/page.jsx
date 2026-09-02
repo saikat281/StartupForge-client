@@ -29,13 +29,13 @@ const OpportunitiesPage = async ({ searchParams }) => {
 
   const searchQuery = await searchParams;
   const page = searchQuery.page || 1;  //string
-  console.log(page)
+  // console.log(page)
   const limit = searchQuery.limit || 10;
   const searchText = searchQuery.search || "";
 
   // New: read selected filters from the URL (single value each)
   const selectedWorkType = searchQuery.workType || ""
-  console.log(selectedWorkType)
+  // console.log(selectedWorkType)
 
   const res = await fetch(`${process.env.SERVER_URL}/opportunity?search=${searchText}&page=${page}&limit=${limit}&workType=${selectedWorkType}`);
 
