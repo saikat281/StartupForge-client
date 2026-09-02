@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { UserPlus, Eye, EyeOff, ImageIcon } from "lucide-react";
+import { UserPlus, Eye, EyeOff, ImageIcon, Icon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+import { FaGoogle } from "react-icons/fa";
+import toast from "react-hot-toast";
+
 
 const SIGNUP_ROLES = ["founder", "collaborator"];
 
@@ -48,9 +52,9 @@ const SignupPage = () => {
     // console.log(user)
     try {
       const response = await authClient.signIn.email({
-      ...user,
-      callbackURL: "/",
-    });
+        ...user,
+        callbackURL: "/",
+      });
 
       console.log("Signin successful:", response);
     } catch (error) {
@@ -59,6 +63,12 @@ const SignupPage = () => {
 
     // redirect('/')
   };
+
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: 'google',
+    })
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
@@ -74,7 +84,7 @@ const SignupPage = () => {
           onSubmit={handleSubmit}
           className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-5"
         >
-         
+
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -122,7 +132,14 @@ const SignupPage = () => {
             )}
           </div>
 
+          <p className=" w-full flex justify-center">or</p>
 
+          <div className=" w-full flex justify-center">
+            <Button onClick={handleGoogleSignIn} className="w-full" variant="tertiary">
+              <FaGoogle />
+              Sign in with Google
+            </Button>
+          </div>
 
           {/* Submit */}
           <button

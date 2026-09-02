@@ -23,25 +23,31 @@ export const auth = betterAuth({
                 defaultValue: "free" //free,pro
             },
             bio: {
-                defaultValue : null
+                defaultValue: null
             },
             skills: {
                 defaultValue: null
             },
             status: {
-                defaultValue : "active"
+                defaultValue: "active"
             }
         }
     },
-// jwt token
-    session : {
-        cookieCache :{
+    // jwt token
+    session: {
+        cookieCache: {
             enabled: true,
-            maxAge : 7 * 60 * 60,
-            strategy : 'jwt'
+            maxAge: 7 * 60 * 60,
+            strategy: 'jwt'
         }
+    },
+    socialProviders: {
+        google: {
+            clientId: process.env.GOOGLE_CLIENT_ID ,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        },
     },
 
     plugins: [jwt()]
-    
+
 });

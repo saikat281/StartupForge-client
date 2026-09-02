@@ -5,6 +5,8 @@ import { UserPlus, Eye, EyeOff, ImageIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import toast from "react-hot-toast";
+import { Button } from "@heroui/react";
+import { FaGoogle } from "react-icons/fa";
 
 const SIGNUP_ROLES = ["founder", "collaborator"];
 
@@ -63,6 +65,12 @@ const SignupPage = () => {
     toast.success("Account Created Successfully")
     redirect(`/dashboard/${user?.role}`)
   };
+
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: 'google',
+    })
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
@@ -187,6 +195,15 @@ const SignupPage = () => {
             {errors.signupAs && (
               <p className="text-xs text-red-500 mt-1">{errors.signupAs}</p>
             )}
+          </div>
+
+          <p className=" w-full flex justify-center">or</p>
+
+          <div className=" w-full flex justify-center">
+            <Button onClick={handleGoogleSignIn} className="w-full" variant="tertiary">
+              <FaGoogle />
+              Sign in with Google
+            </Button>
           </div>
 
           {/* Submit */}

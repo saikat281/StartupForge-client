@@ -50,12 +50,19 @@ export function AvatarDropdown() {
                         </Link>
                     </Dropdown.Item>
 
+                    <Dropdown.Item id="home" textValue="home">
+                        <Link href="/">
+                            <Label>Home</Label>
+                        </Link>
+                    </Dropdown.Item>
+
                     <Dropdown.Item id="logout" textValue="Logout" variant="danger" onClick={handleSignout}>
                         <div className="flex w-full items-center justify-between gap-2">
                             <Label>Log Out</Label>
                             <ArrowRightFromSquare className="size-3.5 text-danger" />
                         </div>
                     </Dropdown.Item>
+
                 </Dropdown.Menu>
             </Dropdown.Popover>
         </Dropdown>
