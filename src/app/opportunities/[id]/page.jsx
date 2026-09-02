@@ -61,6 +61,9 @@ const OpportunityDetailsPage = async ({ params }) => {
                 {opportunity?.roleTitle || "Untitled Role"}
               </h1>
               <p className="text-sm text-gray-500 mt-1">
+                Posted by <span className="font-bold">{opportunity?.startup || "Untitled startup"}</span> 
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
                 Posted opportunity details
               </p>
             </div>

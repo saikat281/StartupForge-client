@@ -61,7 +61,7 @@ const SignupPage = () => {
       console.error("Signup failed:", error);
     }
     toast.success("Account Created Successfully")
-    redirect('/dashboard')
+    redirect(`/dashboard/${user?.role}`)
   };
 
   return (

@@ -50,22 +50,6 @@ export function AvatarDropdown() {
                         </Link>
                     </Dropdown.Item>
 
-
-                    <Dropdown.Item id="profile" textValue="Profile">
-                        <Label>Profile</Label>
-                    </Dropdown.Item>
-                    <Dropdown.Item id="settings" textValue="Settings">
-                        <div className="flex w-full items-center justify-between gap-2">
-                            <Label>Settings</Label>
-                            <Gear className="size-3.5 text-muted" />
-                        </div>
-                    </Dropdown.Item>
-                    <Dropdown.Item id="new-project" textValue="New project">
-                        <div className="flex w-full items-center justify-between gap-2">
-                            <Label>Create Team</Label>
-                            <Persons className="size-3.5 text-muted" />
-                        </div>
-                    </Dropdown.Item>
                     <Dropdown.Item id="logout" textValue="Logout" variant="danger" onClick={handleSignout}>
                         <div className="flex w-full items-center justify-between gap-2">
                             <Label>Log Out</Label>
