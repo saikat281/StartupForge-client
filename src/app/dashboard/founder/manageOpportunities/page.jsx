@@ -19,7 +19,7 @@ const ManageOpportunitiesPage = async () => {
     // console.log(Userdata); 
 
     const filterData = Userdata?.filter(data => data?.userId == user?.id)
-    // console.log(filterData.id);
+    console.log(filterData);
 
     return (
         <div>

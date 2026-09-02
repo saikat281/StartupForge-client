@@ -2,6 +2,7 @@
 
 import { Briefcase, Tag, MapPin, Pencil, Trash2 } from "lucide-react";
 import UpdateOppModal from "./UpdateOppModal";
+import { DeleteOpportunity } from "./opportunity/DeleteOpportunity";
 
 export function ManageOpportunityTable({ user }) {
     
@@ -32,13 +33,7 @@ export function ManageOpportunityTable({ user }) {
 
               <div className="flex items-center gap-2 shrink-0">
                 <UpdateOppModal userData={data} ></UpdateOppModal>
-                <button
-                  type="button"
-                  aria-label="Delete"
-                  className="h-8 w-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
-                >
-                  <Trash2 size={14} />
-                </button>
+                <DeleteOpportunity userData={data}></DeleteOpportunity>
               </div>
             </div>
 
