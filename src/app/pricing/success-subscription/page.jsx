@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
 import { payment } from '@/lib/actions/payment'
+import { getTokenServer } from '@/lib/actions/getTokenServer'
 
 export default async function Success({ searchParams }) {
     const { session_id } = await searchParams
@@ -12,6 +13,10 @@ export default async function Success({ searchParams }) {
         headers: await headers(),
     });
     const user = session?.user;
+   
+
+
+
 
     const now = new Date();
     const day = now.getDate();

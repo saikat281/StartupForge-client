@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { Lock, Zap } from "lucide-react";
 import { getMyStartups } from "@/lib/actions/GetMyStartupAction";
+import { GetUserDataAction } from "@/lib/actions/GetUserDataAction";
+
 
 const WORK_TYPES = ["Remote", "On-site", "Hybrid"];
 
@@ -33,9 +35,11 @@ const AddOpportunityPage = () => {
     const [errors, setErrors] = useState({});
     const [startupStatus, setStartupStatus] = useState(false);
     const [cnt, setCnt] = useState(0);
+    const [plan, setPlan] = useState("free")
 
     const { data: session } = authClient.useSession();
     const user = session?.user;
+    // console.log(user);
 
 
 
@@ -69,9 +73,20 @@ const AddOpportunityPage = () => {
             // console.log(filterOppData.length);
             setCnt(filterOppData.length);
         }
+        // to get updated plan data from user after taking pro plan , because session?data dont get updated data.
+        const fetchUser = async () => {
+            // For total opportunity
+            
+            const UserData = await GetUserDataAction();
+            // console.log(UserData);
+            const filterUserData = UserData?.find(data=>data?._id === user?.id)
+            // console.log(filterUserData)
+            setPlan(filterUserData?.plan)
+        }
 
         fetchStartup();
         fetchOpportunity();
+        fetchUser();
     }, [user?.id]);
 
     // console.log(startupStatus);
@@ -162,7 +177,7 @@ const AddOpportunityPage = () => {
                         </p>
                     </div>
                 </div>
-            ) : user?.plan === "free" && cnt >= 3 ? (
+            ) : plan === "free" && cnt >= 3 ? (
                 <div className="rounded-xl border border-orange-200 bg-orange-50 p-5 shadow-sm">
                     <div className="flex items-start gap-4">
                         <div className="h-11 w-11 shrink-0 rounded-lg bg-orange-100 flex items-center justify-center">
@@ -194,7 +209,7 @@ const AddOpportunityPage = () => {
                     <div className="mb-6">
 
                         <h1 className="text-xl font-semibold text-gray-900">Add Opportunity</h1>
-                        <p className={`${cnt >= 3 || user?.plan == "pro" && "hidden"} text-orange-600`}>Post a role for your startup. ({cnt}/3 free slots used)</p>
+                        <p className={`${cnt >= 3 || plan === "pro" ? "hidden" : ""} text-orange-600`}>Post a role for your startup. ({cnt}/3 free slots used)</p>
                         <p className="text-sm text-gray-500 mt-1">
                             Fill in the details below to post a new opportunity.
                         </p>
