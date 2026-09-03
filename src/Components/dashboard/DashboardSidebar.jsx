@@ -144,17 +144,7 @@ export default function DashboardSidebar({ active, setActive, sidebarOpen }) {
         })}
       </nav>
 
-      <div className="p-3 border-t border-gray-200">
-        <div className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-gray-100 cursor-pointer">
-          <div className="h-8 w-8 rounded-full bg-gray-300 shrink-0" />
-          {sidebarOpen && (
-            <div className="min-w-0">
-              <p className="text-sm font-medium truncate">Jane Doe</p>
-              <p className="text-xs text-gray-500 truncate">jane@acme.com</p>
-            </div>
-          )}
-        </div>
-      </div>
+
     </aside>
   );
 }

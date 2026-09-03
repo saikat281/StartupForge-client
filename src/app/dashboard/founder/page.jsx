@@ -1,13 +1,22 @@
 import { getTokenServer } from "@/lib/actions/getTokenServer";
+import { auth } from "@/lib/auth";
 import { BriefcaseBusiness, CircleCheckBig, UserRound } from "lucide-react";
+import { headers } from "next/headers";
 
 
 const FounderOverviewPage = async () => {
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user;
+
   const token = await getTokenServer();
 
 
   const res1 = await fetch(`${process.env.SERVER_URL}/opportunities`);
-  const opportunityData = await res1.json();
+  const oppData = await res1.json();
+  const opportunityData = oppData.filter(data => data.userId === user?.id)
 
 
   const res2 = await fetch(`${process.env.SERVER_URL}/application`, {
@@ -16,7 +25,8 @@ const FounderOverviewPage = async () => {
 
     }
   });
-  const applicationData = await res2.json();
+  const appData = await res2.json();
+  const applicationData = appData.filter(data=>data.oppUserId === user?.id)
 
   const acceptedData = applicationData?.filter(data => data?.status === "accepted")
 

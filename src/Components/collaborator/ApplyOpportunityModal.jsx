@@ -67,10 +67,10 @@ const ApplyOpportunityModal = ({ opportunity }) => {
 
             const today = new Date();
             const date = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
-            // console.log(date);
+            console.log(opportunity?.userId);
 
 
-            await ApplicationForm({ ...form,email: user?.email ?? "", opportunity_name: opportunity?.roleTitle, startup: opportunity?.startup, status, date, oppUserId: opportunity?.userId })
+            await ApplicationForm({ ...form,email: user?.email ?? "", opportunity_name: opportunity?.roleTitle, startup: opportunity?.startup, status, date, oppUserId: opportunity?.userId,AppUserId : user?.id })
 
             // await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/applications`, {
             //   method: "POST",

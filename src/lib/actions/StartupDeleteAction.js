@@ -1,5 +1,6 @@
 "use server"
 
+import { getTokenServer } from "./getTokenServer";
 import OpportunityDeleteAction from "./OpportunityDeleteAction";
 
 
@@ -8,6 +9,7 @@ const server_url = process.env.SERVER_URL;
 
 export const StartupDeleteAction = async (id, userId) => {
     try {
+         const token = await getTokenServer();
         const res = await fetch(`${server_url}/mystartup/${id}`, {
             method: "DELETE",
             headers: {

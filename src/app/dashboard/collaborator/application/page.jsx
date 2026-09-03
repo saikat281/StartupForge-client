@@ -1,5 +1,7 @@
 import { getTokenServer } from "@/lib/actions/getTokenServer";
+import { auth } from "@/lib/auth";
 import { ClipboardList, ExternalLink } from "lucide-react";
+import { headers } from "next/headers";
 
 const formatDate = (dateStr) => {
     if (!dateStr) return "—";
@@ -39,6 +41,13 @@ const StatusBadge = ({ status }) => {
 };
 
 const CollaboratorApplicationPage = async () => {
+
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+    const user = session?.user;
+    // console.log("application user: ",user?.id)
+
     const token = await getTokenServer();
 
     const res = await fetch(`${process.env.SERVER_URL}/application`, {
@@ -47,18 +56,20 @@ const CollaboratorApplicationPage = async () => {
 
         }
     });
-    const applications = await res.json();
+    const result = await res.json();
+    const applications = result.filter(data => data.AppUserId == user?.id);
+    // console.log(applications);
 
     return (
         <div className="p-6">
             <div className="mb-6">
-                <h1 className="text-xl font-semibold text-gray-900">My Applications</h1>
+                <h1 className="text-xl font-semibold text-gray-900">My Application</h1>
                 <p className="text-sm text-gray-500 mt-1">
                     Track the status of opportunities you have applied to.
                 </p>
             </div>
 
-            {(!applications || applications.length === 0) ? (
+            {(!applications || applications?.length == 0) ? (
                 <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
                     <ClipboardList className="mx-auto text-gray-300" size={32} />
                     <p className="text-sm text-gray-500 mt-3">
@@ -87,7 +98,7 @@ const CollaboratorApplicationPage = async () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {applications.map((application) => (
+                                {applications?.map((application) => (
                                     <tr
                                         key={application._id}
                                         className="hover:bg-gray-50 transition-colors"

@@ -25,7 +25,7 @@ const ProfileForm = ({ user }) => {
         // console.log(data);
         //  console.log(user?.id)
        await ProfileUpdateForm(data)
-        toast.success('profile Successfully Updated!');
+        toast.success('profile Successfully Updated! please refresh to see updated data');
 
         
     };

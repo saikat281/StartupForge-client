@@ -1,8 +1,16 @@
 import FounderApplicationsTable from "@/Components/founder/applications/FounderApplicationsTable";
 import { getTokenServer } from "@/lib/actions/getTokenServer";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 const FounderApplicationsPage = async () => {
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const user = session?.user;
+
   const token = await getTokenServer();
 
   const res = await fetch(`${process.env.SERVER_URL}/application`, {
@@ -11,7 +19,9 @@ const FounderApplicationsPage = async () => {
 
     }
   });
-  const ApplicationData = await res.json();
+  const result = await res.json();
+  const ApplicationData = result.filter(data=>data.oppUserId === user?.id)
+  // console.log(ApplicationData);
 
   return (
     <div className="p-6">
