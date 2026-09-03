@@ -26,7 +26,7 @@ const SignupPage = () => {
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
-  const validate = () => {
+  const Notvalidate = () => {
     const next = {};
     if (!form.name.trim()) next.name = "Name is required";
     if (!form.email.trim()) {
@@ -46,20 +46,33 @@ const SignupPage = () => {
   // Handle_Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (Notvalidate()) {
+      return;
+    }
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
 
     // console.log(user)
-    try {
-      const response = await authClient.signIn.email({
-        ...user,
+    await authClient.signIn.email(
+      {
+        email: form.email,
+        password: form.password,
         callbackURL: "/",
-      });
+      },
+      {
+        onSuccess: () => {
+          toast.success("Login successful!");
+        },
 
-      console.log("Signin successful:", response);
-    } catch (error) {
-      console.error("Signin failed:", error);
-    }
+        onError: (ctx) => {
+          console.log("AUTH ERROR:", ctx.error);
+
+          toast.error(
+            ctx.error.message || "Invalid email or password"
+          );
+        },
+      }
+    );
 
     // redirect('/')
   };

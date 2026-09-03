@@ -55,6 +55,10 @@ const ApplyOpportunityModal = ({ opportunity }) => {
 
     const handleSubmit = async (close) => {
         if (!validate()) return;
+        else if(user?.role != "collaborator"){
+            toast.error("Only Collabortor can apply Opportunity!");
+            return;
+        }
         setSubmitting(true);
         try {
             // console.log("Submitting application:", { opportunityId, ...form });
@@ -174,7 +178,9 @@ const ApplyOpportunityModal = ({ opportunity }) => {
                                     </TextField>
                                 </Modal.Body>
 
-                                <Modal.Footer className="flex justify-end gap-2 px-6 py-4 border-t border-gray-100">
+                                <p className={`${user?.role === "collaborator" && "hidden"} text-sm ml-5 text-red-700 font-semibold`}>Note: Only Collaborator can apply opportunity!</p>
+
+                                <Modal.Footer  className="flex justify-end gap-2 px-6 py-4 border-t border-gray-100">
                                     {/* slot="close" makes this Button auto-close the modal, no handler needed */}
                                     <Button
                                         slot="close"
