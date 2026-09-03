@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 🚀 StartupForge 
 
-## Getting Started
+StartupForge is a full-stack startup team-building platform that connects startup founders with skilled collaborators. Founders can publish startup ideas, create opportunities, review applications, and build their teams, while collaborators can discover opportunities, apply to teams, and manage their applications.
 
-First, run the development server:
+The platform also includes role-based dashboards for Founders, Collaborators, and Admins, secure authentication, Stripe payments, server-side pagination, search/filtering, and a responsive modern UI.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🌐 Project Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+StartupForge creates a bridge between startup founders and talented developers, designers, marketers, and other professionals.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+👨‍💼 Founder
+Create and manage startup profiles
+Publish team opportunities
+Manage opportunities
+Review collaborator applications
+Accept or reject applicants
+Purchase premium packages through Stripe when required
+View startup and team statistics
+👨‍💻 Collaborator
+Browse startups and opportunities
+Search opportunities
+Filter opportunities
+View opportunity details
+Apply to opportunities
+Track application status
+Manage personal profile
+🛡️ Admin
+View platform statistics
+Manage users
+Block/unblock users
+Approve/remove startups
+Manage platform transactions
+Monitor overall platform activities
+✨ Key Features
+🔐 Authentication & Authorization
+Better Auth authentication
+Email/password authentication
+Google authentication
+Secure authentication using environment variables
+Role-based access control
+Founder, Collaborator, and Admin roles
+Protected private routes
+JWT Authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+The Browse Opportunities page supports:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Search
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Users can search opportunities by:
 
-## Deploy on Vercel
+Role title
+Required skills
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Filtering
+
+Users can filter opportunities by:
+
+Work type
+Industry
+
+
+📄 Server-Side Pagination
+
+Server-side pagination has been implemented on the Browse Opportunities page.
+
+# 👨‍💼 Founder Dashboard
+
+The Founder Dashboard contains:
+
+Overview
+Total opportunities
+Total applications
+Accepted members
+Startup statistics
+My Startup
+Create startup
+View startup
+Update startup
+Delete startup
+Add Opportunity
+
+Founders can create new opportunities with:
+
+Role title
+Required skills
+Work type
+Commitment level
+Deadline
+Manage Opportunities
+View opportunities
+Edit opportunities
+Delete opportunities
+Applications
+View applications
+Accept applicants
+Reject applicants
+Update application status
+# 👨‍💻 Collaborator Dashboard
+
+The Collaborator Dashboard contains:
+
+Overview
+
+Provides a summary of the collaborator's activities.
+
+My Applications
+
+
+Collaborators can update:
+
+Name
+Profile image
+Skills
+Bio
+# 🛡️ Admin Dashboard
+
+The Admin Dashboard provides platform-level management.
+
+Overview
+
+Displays:
+
+Total users
+Total startups
+Total opportunities
+Total revenue
+Manage Users
+
+Admins can:
+
+View users
+Block users
+Unblock users
+Manage Startups
+
+Admins can:
+
+View startups
+Approve startups
+Remove startups
+Transactions
+
+Admins can view:
+
+User
+Payment amount
+Transaction date
+Payment status
+
+🛠️ Technologies Used
+# Frontend
+Next.js
+JavaScript
+Tailwind CSS
+Responsive UI components
+# Backend
+Express.js
+MongoDB
+JWT Authentication
+HTTPOnly Cookies
+Middleware-based authorization
+
+The frontend and backend are deployed separately with production-ready configuration.
+
+
+
+This project was created for educational and assessment purposes.
