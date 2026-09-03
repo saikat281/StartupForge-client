@@ -2,6 +2,7 @@
 import { ManageOpportunityTable } from "@/Components/founder/ManageOpportunityTable";
 
 import { auth } from "@/lib/auth";
+import { ClipboardList } from "lucide-react";
 import { headers } from "next/headers";
 
 
@@ -24,8 +25,20 @@ const ManageOpportunitiesPage = async () => {
     return (
         <div>
             <h1 className="text-3xl font-bold mb-[60px]">Manage Opportunities</h1>
-            <ManageOpportunityTable user={filterData}></ManageOpportunityTable>
-        </div>
+            {filterData.length == 0 ? (
+                <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center">
+                    <ClipboardList className="mx-auto text-gray-300" size={32} />
+                    <p className="text-sm text-gray-500 mt-3">
+                        No opportunities have been received yet.
+                    </p>
+                </div>
+            ) : (
+                <ManageOpportunityTable user={filterData}></ManageOpportunityTable>
+            )
+
+            }
+
+        </div >
     );
 };
 

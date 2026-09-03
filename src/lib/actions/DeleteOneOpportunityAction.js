@@ -4,10 +4,10 @@ import { getTokenServer } from "./getTokenServer";
 
 const server_url = process.env.SERVER_URL;
 
-export const OpportunityDeleteAction = async (id) => {
+export const DeleteOneOpportunityAction = async (id) => {
     try {
         const token = await getTokenServer();
-        const res = await fetch(`${server_url}/opportunity/${id}`, {
+        const res = await fetch(`${server_url}/opportunities/opportunity/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             authorization: `Bearer ${token}`,
@@ -25,4 +25,4 @@ export const OpportunityDeleteAction = async (id) => {
     }
 };
 
-export default OpportunityDeleteAction;
+export default DeleteOneOpportunityAction;

@@ -1,6 +1,7 @@
 "use client";
 
-import OpportunityDeleteAction from "@/lib/actions/OpportunityDeleteAction";
+import DeleteOneOpportunityAction from "@/lib/actions/DeleteOneOpportunityAction";
+
 
 import { TrashBin } from "@gravity-ui/icons";
 import { AlertDialog, Button } from "@heroui/react";
@@ -14,7 +15,7 @@ export function DeleteOpportunity({ userData }) {
     const handleDelete = async () => {
 
         try {
-            await OpportunityDeleteAction(id);
+            await DeleteOneOpportunityAction(id);
         } finally {
             toast.success("opportunity Deleted")
             location.reload();
